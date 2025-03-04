@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { SplitText } from "../../utils/SplitText";
@@ -14,77 +13,65 @@ export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
+  const gradientTextRef = useRef<HTMLSpanElement>(null);
 
-  const currentTime = "2025-03-04 07:04:32";
+  const currentTime = "2025-03-04 08:24:51";
   const currentUser = "vkhare2909";
 
   useEffect(() => {
-    let headlineSplit: any;
-    let subtitleSplit: any;
+    // Animation timeline to make cleanup easier
+    const tl = gsap.timeline();
 
     const animateText = async () => {
-      // Try-catch to handle potential SplitText issues
       try {
         if (headlineRef.current && subtitleRef.current) {
-          // Wait a tiny bit to ensure fonts are loaded
+          // Wait for fonts to load
           await new Promise((resolve) => setTimeout(resolve, 100));
 
-          // Split text animation
-          headlineSplit = new SplitText(headlineRef.current, {
-            type: "words,chars",
-          });
-
-          subtitleSplit = new SplitText(subtitleRef.current, {
-            type: "lines",
-          });
-
-          // Headline animation
-          gsap.set(headlineSplit.chars, { opacity: 0, y: 20, rotationX: -80 });
-          gsap.to(headlineSplit.chars, {
-            opacity: 1,
-            y: 0,
-            rotationX: 0,
-            stagger: 0.02,
-            duration: 1,
-            ease: "power4.out",
-          });
+          // Animate the headline without SplitText
+          tl.fromTo(
+            headlineRef.current.querySelectorAll("span"),
+            {
+              opacity: 0,
+              y: 30,
+              rotationX: -40,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              rotationX: 0,
+              stagger: 0.12,
+              duration: 1,
+              ease: "power3.out",
+            }
+          );
 
           // Subtitle animation
-          gsap.set(subtitleSplit.lines, { opacity: 0, y: 20 });
-          gsap.to(subtitleSplit.lines, {
-            opacity: 1,
-            y: 0,
-            stagger: 0.1,
-            duration: 0.8,
-            ease: "power3.out",
-            delay: 0.5,
-          });
+          tl.fromTo(
+            subtitleRef.current,
+            {
+              opacity: 0,
+              y: 20,
+            },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power3.out",
+            },
+            "-=0.6" // Start slightly before the headline animation completes
+          );
         }
       } catch (error) {
-        console.log("SplitText animation fallback");
-        // Fallback animation if SplitText fails
-        if (headlineRef.current) {
-          gsap.fromTo(
-            headlineRef.current,
-            { opacity: 0, y: 30 },
-            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-          );
-        }
-
-        if (subtitleRef.current) {
-          gsap.fromTo(
-            subtitleRef.current,
-            { opacity: 0, y: 20 },
-            { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power3.out" }
-          );
-        }
+        console.error("Animation error:", error);
       }
     };
 
+    // Start animation
     animateText();
 
-    // Parallax effect
-    gsap.to(".parallax-bg", {
+    // Set up ScrollTrigger for parallax effect (if needed)
+    const parallaxEffect = gsap.to(".parallax-bg", {
       yPercent: -20,
       ease: "none",
       scrollTrigger: {
@@ -95,10 +82,12 @@ export default function Hero() {
       },
     });
 
-    // Cleanup
+    // Cleanup function
     return () => {
-      if (headlineSplit) headlineSplit.revert();
-      if (subtitleSplit) subtitleSplit.revert();
+      tl.kill(); // Kill the timeline
+      if (parallaxEffect && parallaxEffect.scrollTrigger) {
+        parallaxEffect.scrollTrigger.kill(); // Kill the scroll trigger
+      }
     };
   }, []);
 
@@ -151,27 +140,17 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          {/* Headline with robust animation approach */}
+          {/* Headline with preserved styling - structured for animation */}
           <div className="mb-6">
             <h1
               ref={headlineRef}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight headline-text"
             >
-              <span
-                className="inline-block gradient-text"
-                style={{
-                  background:
-                    "linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  color: "transparent",
-                }}
-              >
+              <span ref={gradientTextRef} className="gradient-text block mb-2">
                 Level Up Your Career
-              </span>{" "}
-              <span className="inline-block">With</span>{" "}
-              <span className="relative inline-block">
+              </span>
+              <span className="with-text inline-block mr-2">With</span>
+              <span className="ai-text relative inline-block">
                 AI & Blockchain
                 <svg
                   className="absolute -bottom-2 left-0 w-full"
@@ -267,20 +246,6 @@ export default function Hero() {
           <div className="absolute inset-0">
             <GlobeVisualization />
           </div>
-
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
-          >
-            <div
-              className="relative w-[300px] h-[300px] overflow-hidden rounded-xl shadow-lg"
-              style={{ animation: "float 6s ease-in-out infinite" }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/60 to-transparent pointer-events-none"></div>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
 
@@ -319,7 +284,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Add float animation */}
+      {/* Move inline styles to CSS classes */}
       <style jsx global>{`
         @keyframes float {
           0% {
@@ -333,12 +298,13 @@ export default function Hero() {
           }
         }
 
-        /* Fallback for the gradient text in case background-clip isn't working */
-        @supports not (background-clip: text) {
-          .gradient-text {
-            background: none !important;
-            color: #38bdf8 !important;
-          }
+        /* Gradient text styles */
+        .gradient-text {
+          background: linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
         }
       `}</style>
     </section>
