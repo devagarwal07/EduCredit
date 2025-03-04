@@ -91,14 +91,6 @@ export default function Header() {
       >
         <div className="container mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
-            <div className="relative w-10 h-10">
-              <Image
-                src="/logo.svg"
-                alt="UpSkillr Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
             <span
               className="text-xl font-bold"
               style={{

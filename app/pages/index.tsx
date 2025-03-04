@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { gsap } from "gsap";
 
@@ -12,15 +12,23 @@ import BlockchainCredentials from "../components/sections/BlockchainCredentials"
 import Testimonials from "../components/sections/Testimonials";
 import CTA from "../components/sections/CTA";
 import FloatingElements from "../components/effects/FloatingElements";
-
+import LoadingSpinner from "../components/ui/LoadingScreen";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
+  const [loading, setLoading] = useState(true);
 
   // Improved transform values for smoother transitions
   const opacity = useTransform(scrollYProgress, [0, 0.15], [1, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.15], [1, 0.97]);
+  useEffect(() => {
+    // Simulate API data loading
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
 
+    return () => clearTimeout(timer);
+  }, []);
   useEffect(() => {
     // Create a GSAP context for better cleanup
     const ctx = gsap.context(() => {
@@ -56,7 +64,13 @@ export default function Home() {
 
     return () => ctx.revert();
   }, []);
-
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <LoadingSpinner />
+      </div>
+    );
+  }
   return (
     <Layout>
       <FloatingElements />
