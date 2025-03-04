@@ -15,7 +15,7 @@ export default function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
 
-  const currentTime = "2025-03-03 19:00:51";
+  const currentTime = "2025-03-04 06:54:23";
   const currentUser = "vkhare2909";
 
   useEffect(() => {
@@ -63,22 +63,29 @@ export default function Hero() {
   return (
     <section
       ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center py-16 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden"
     >
-      {/* Background Elements */}
-      <div className="absolute inset-0 -z-10 parallax-bg">
+      {/* Background Elements - Expanded to cover all content */}
+      <div
+        className="absolute inset-0 -z-10 parallax-bg"
+        style={{ height: "150%" }}
+      >
         <div
           className="absolute inset-0 opacity-30"
           style={{
             background:
-              "radial-gradient(circle at center, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 70%)",
+              "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+            height: "150%",
+            width: "100%",
           }}
         />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at center, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 70%)",
+              "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+            height: "150%",
+            width: "100%",
           }}
         />
       </div>
@@ -90,18 +97,6 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="z-10"
         >
-          {/* User info badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.5 }}
-            className="mb-4 inline-flex text-xs bg-gray-800/50 backdrop-blur-sm rounded-full px-3 py-1 border border-gray-700/50"
-          >
-            <span className="text-indigo-400">{currentUser}</span>
-            <span className="mx-2 text-gray-500">|</span>
-            <span className="text-gray-400">{currentTime}</span>
-          </motion.div>
-
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -208,9 +203,9 @@ export default function Hero() {
               Trusted by industry leaders:
             </p>
             <div className="flex space-x-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <FaGoogle />
-              <FaMicrosoft />
-              <FaAws />
+              <FaGoogle className="text-xl md:text-2xl" />
+              <FaMicrosoft className="text-xl md:text-2xl" />
+              <FaAws className="text-xl md:text-2xl" />
             </div>
           </motion.div>
         </motion.div>
@@ -219,9 +214,12 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2 }}
-          className="relative h-[500px] w-full z-0"
+          className="relative h-[600px] w-full z-0"
         >
-          <GlobeVisualization />
+          {/* Globe container with increased height */}
+          <div className="absolute inset-0">
+            <GlobeVisualization />
+          </div>
 
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
@@ -238,6 +236,7 @@ export default function Hero() {
                 alt="Career Path"
                 fill
                 className="object-contain"
+                priority
               />
             </div>
           </motion.div>

@@ -10,14 +10,17 @@ if (!fs.existsSync(targetDir)) {
   fs.mkdirSync(targetDir, { recursive: true });
 }
 
-// Files to copy
+// Files to copy from three-globe package
 const files = [
+  // Copy the blue marble earth as both original and daylight version
   { source: "earth-blue-marble.jpg", target: "earth-blue-marble.jpg" },
+  { source: "earth-blue-marble.jpg", target: "earth-daylight.jpg" },
+  { source: "earth-night.jpg", target: "earth-night.jpg" },
   { source: "earth-topology.png", target: "earth-topology.png" },
   { source: "earth-water.png", target: "earth-water.png" },
 ];
 
-// Copy each file
+// Copy each file from three-globe
 files.forEach((file) => {
   try {
     const sourceFile = path.join(sourceDir, file.source);
@@ -34,4 +37,24 @@ files.forEach((file) => {
   }
 });
 
-console.log("Texture copying complete!");
+// Additional textures - check if they exist in another location
+const additionalFiles = [
+  {
+    name: "earth-clouds.png",
+    url: "https://raw.githubusercontent.com/turban/webgl-earth/master/images/cloud.png",
+  },
+];
+
+console.log("\nAdditional textures required:");
+additionalFiles.forEach((file) => {
+  console.log(
+    `- ${file.name}: Download from ${file.url} and place in ${targetDir}`
+  );
+});
+
+console.log("\nTexture copying complete!");
+console.log(
+  "Note: For the cloud texture, you may need to download it manually from the provided URL."
+);
+console.log("Current user:", "vkhare2909");
+console.log("Date:", "2025-03-04 06:34:21");

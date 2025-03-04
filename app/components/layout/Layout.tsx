@@ -4,6 +4,7 @@ import { ReactNode, useEffect, useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import ScrollProgress from "../ui/ScrollProgress";
+import Cursor from "../effects/Cursor";
 
 type LayoutProps = {
   children: ReactNode;
@@ -29,11 +30,9 @@ export default function Layout({
 
   return (
     <>
+      <Cursor />
       <Header />
-      <div className="fixed bottom-4 right-4 z-40 text-xs text-gray-400 bg-black/30 backdrop-blur-sm py-1 px-2 rounded">
-        <div>User: {userLogin}</div>
-        <div>UTC: {currentDateTime}</div>
-      </div>
+
       <main className="min-h-screen pt-20">{children}</main>
       <Footer />
       <ScrollProgress />

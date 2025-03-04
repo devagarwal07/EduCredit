@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "node copy-textures.js"
+    "postinstall": "node copy-textures.js",
+    "download-cloud": "curl -o public/textures/earth-clouds.png https://raw.githubusercontent.com/turban/webgl-earth/master/images/cloud.png"
   },
   "dependencies": {
     "@react-three/drei": "^10.0.3",
