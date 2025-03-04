@@ -15,37 +15,73 @@ export default function Hero() {
   const headlineRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
 
-  const currentTime = "2025-03-04 06:54:23";
+  const currentTime = "2025-03-04 07:04:32";
   const currentUser = "vkhare2909";
 
   useEffect(() => {
-    // Split text animation
-    if (headlineRef.current && subtitleRef.current) {
-      const headlineSplit = new SplitText(headlineRef.current, {
-        type: "words,chars",
-      });
-      const subtitleSplit = new SplitText(subtitleRef.current, {
-        type: "lines",
-      });
+    let headlineSplit: any;
+    let subtitleSplit: any;
 
-      gsap.from(headlineSplit.chars, {
-        opacity: 0,
-        y: 20,
-        rotationX: -80,
-        stagger: 0.02,
-        duration: 1,
-        ease: "power4.out",
-      });
+    const animateText = async () => {
+      // Try-catch to handle potential SplitText issues
+      try {
+        if (headlineRef.current && subtitleRef.current) {
+          // Wait a tiny bit to ensure fonts are loaded
+          await new Promise((resolve) => setTimeout(resolve, 100));
 
-      gsap.from(subtitleSplit.lines, {
-        opacity: 0,
-        y: 20,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.5,
-      });
-    }
+          // Split text animation
+          headlineSplit = new SplitText(headlineRef.current, {
+            type: "words,chars",
+          });
+
+          subtitleSplit = new SplitText(subtitleRef.current, {
+            type: "lines",
+          });
+
+          // Headline animation
+          gsap.set(headlineSplit.chars, { opacity: 0, y: 20, rotationX: -80 });
+          gsap.to(headlineSplit.chars, {
+            opacity: 1,
+            y: 0,
+            rotationX: 0,
+            stagger: 0.02,
+            duration: 1,
+            ease: "power4.out",
+          });
+
+          // Subtitle animation
+          gsap.set(subtitleSplit.lines, { opacity: 0, y: 20 });
+          gsap.to(subtitleSplit.lines, {
+            opacity: 1,
+            y: 0,
+            stagger: 0.1,
+            duration: 0.8,
+            ease: "power3.out",
+            delay: 0.5,
+          });
+        }
+      } catch (error) {
+        console.log("SplitText animation fallback");
+        // Fallback animation if SplitText fails
+        if (headlineRef.current) {
+          gsap.fromTo(
+            headlineRef.current,
+            { opacity: 0, y: 30 },
+            { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
+          );
+        }
+
+        if (subtitleRef.current) {
+          gsap.fromTo(
+            subtitleRef.current,
+            { opacity: 0, y: 20 },
+            { opacity: 1, y: 0, duration: 0.8, delay: 0.3, ease: "power3.out" }
+          );
+        }
+      }
+    };
+
+    animateText();
 
     // Parallax effect
     gsap.to(".parallax-bg", {
@@ -58,6 +94,12 @@ export default function Hero() {
         scrub: true,
       },
     });
+
+    // Cleanup
+    return () => {
+      if (headlineSplit) headlineSplit.revert();
+      if (subtitleSplit) subtitleSplit.revert();
+    };
   }, []);
 
   return (
@@ -109,52 +151,57 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <h1
-            ref={headlineRef}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
-          >
-            <span
-              style={{
-                background:
-                  "linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf)",
-                WebkitBackgroundClip: "text",
-                backgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                color: "transparent",
-              }}
+          {/* Headline with robust animation approach */}
+          <div className="mb-6">
+            <h1
+              ref={headlineRef}
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight"
             >
-              Level Up Your Career
-            </span>{" "}
-            With
-            <span className="relative ml-2 inline-block">
-              AI & Blockchain
-              <svg
-                className="absolute -bottom-2 left-0 w-full"
-                viewBox="0 0 200 8"
-                xmlns="http://www.w3.org/2000/svg"
+              <span
+                className="inline-block gradient-text"
+                style={{
+                  background:
+                    "linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  color: "transparent",
+                }}
               >
-                <path
-                  d="M0,5 Q40,0 80,5 T160,5 T240,5"
-                  fill="none"
-                  stroke="url(#gradient)"
-                  strokeWidth="2"
-                />
-                <defs>
-                  <linearGradient
-                    id="gradient"
-                    x1="0%"
-                    y1="0%"
-                    x2="100%"
-                    y2="0%"
-                  >
-                    <stop offset="0%" stopColor="#38bdf8" />
-                    <stop offset="50%" stopColor="#d946ef" />
-                    <stop offset="100%" stopColor="#2dd4bf" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
-          </h1>
+                Level Up Your Career
+              </span>{" "}
+              <span className="inline-block">With</span>{" "}
+              <span className="relative inline-block">
+                AI & Blockchain
+                <svg
+                  className="absolute -bottom-2 left-0 w-full"
+                  viewBox="0 0 200 8"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <path
+                    d="M0,5 Q40,0 80,5 T160,5 T240,5"
+                    fill="none"
+                    stroke="url(#gradient)"
+                    strokeWidth="2"
+                  />
+                  <defs>
+                    <linearGradient
+                      id="gradient"
+                      x1="0%"
+                      y1="0%"
+                      x2="100%"
+                      y2="0%"
+                    >
+                      <stop offset="0%" stopColor="#38bdf8" />
+                      <stop offset="50%" stopColor="#d946ef" />
+                      <stop offset="100%" stopColor="#2dd4bf" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </span>
+            </h1>
+          </div>
 
           <p
             ref={subtitleRef}
@@ -228,16 +275,10 @@ export default function Hero() {
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10"
           >
             <div
-              className="relative w-[300px] h-[300px]"
+              className="relative w-[300px] h-[300px] overflow-hidden rounded-xl shadow-lg"
               style={{ animation: "float 6s ease-in-out infinite" }}
             >
-              <Image
-                src="/illustrations/career-path.svg"
-                alt="Career Path"
-                fill
-                className="object-contain"
-                priority
-              />
+              <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/60 to-transparent pointer-events-none"></div>
             </div>
           </motion.div>
         </motion.div>
@@ -289,6 +330,14 @@ export default function Hero() {
           }
           100% {
             transform: translateY(0px);
+          }
+        }
+
+        /* Fallback for the gradient text in case background-clip isn't working */
+        @supports not (background-clip: text) {
+          .gradient-text {
+            background: none !important;
+            color: #38bdf8 !important;
           }
         }
       `}</style>
