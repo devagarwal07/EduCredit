@@ -6,6 +6,11 @@ import { motion } from "framer-motion";
 type CursorMode = "default" | "link" | "button" | "text" | "hidden";
 
 const Cursor = () => {
+  // Ensure no rendering on server
+  if (typeof window === "undefined") {
+    return null;
+  }
+
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -20,35 +25,34 @@ const Cursor = () => {
   const [lastActive, setLastActive] = useState(currentDateTime);
 
   useEffect(() => {
-    // Updates cursor position
+    // Track cursor position
     const updatePosition = (e: MouseEvent) => {
       setPosition({ x: e.clientX, y: e.clientY });
       setLastActive(new Date().toISOString());
     };
 
-    // Handles mouse click states
+    // Click events
     const handleMouseDown = () => {
       setClicked(true);
       setClickCount((prev) => prev + 1);
     };
     const handleMouseUp = () => setClicked(false);
 
-    // Handles viewport entry/exit
+    // Hover in/out
     const handleMouseEnter = () => setHidden(false);
     const handleMouseLeave = () => setHidden(true);
 
-    // Adds event listeners for cursor positioning and state
     window.addEventListener("mousemove", updatePosition);
     window.addEventListener("mousedown", handleMouseDown);
     window.addEventListener("mouseup", handleMouseUp);
     window.addEventListener("mouseenter", handleMouseEnter);
     window.addEventListener("mouseleave", handleMouseLeave);
 
-    // Define all the interactive elements to track
+    // Define interactive elements
     const setupInteractiveElements = () => {
       // Links and buttons
-      const interactiveElements = document.querySelectorAll("a, button");
-      interactiveElements.forEach((el) => {
+      const interactiveEls = document.querySelectorAll("a, button");
+      interactiveEls.forEach((el) => {
         el.addEventListener("mouseenter", () => setCursorMode("link"));
         el.addEventListener("mouseleave", () => setCursorMode("default"));
       });
@@ -63,20 +67,15 @@ const Cursor = () => {
       });
     };
 
-    // Initial setup
     setupInteractiveElements();
 
-    // Setup a MutationObserver to handle dynamically added elements
+    // Watch for DOM changes
     const observer = new MutationObserver(() => {
       setupInteractiveElements();
     });
+    observer.observe(document.body, { childList: true, subtree: true });
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
-
-    // Cleanup function
+    // Cleanup
     return () => {
       window.removeEventListener("mousemove", updatePosition);
       window.removeEventListener("mousedown", handleMouseDown);
@@ -87,31 +86,32 @@ const Cursor = () => {
     };
   }, []);
 
-  // Only render custom cursor on non-touch devices
-  if (
-    typeof window !== "undefined" &&
-    window.matchMedia("(pointer: coarse)").matches
-  ) {
+  // Hide on touch devices
+  if (window.matchMedia("(pointer: coarse)").matches) {
     return null;
   }
 
-  // Determine cursor styles based on mode
+  // Dynamic styles
   const getCursorStyles = () => {
     switch (cursorMode) {
       case "link":
         return {
-          scale: clicked ? 1.2 : 1.5,
-          width: "50px",
-          height: "50px",
-          borderColor: "rgba(79, 70, 229, 0.6)", // Indigo color
+          scale: clicked ? 1.1 : 1.4,
+          width: "44px",
+          height: "44px",
+          borderColor: "rgba(99, 102, 241, 0.75)", // Indigo
+          boxShadow: clicked
+            ? "0 0 10px rgba(99, 102, 241, 0.5)"
+            : "0 0 15px rgba(99, 102, 241, 0.4)",
         };
       case "text":
         return {
-          scale: 1,
+          scale: clicked ? 1.05 : 1,
           width: "4px",
           height: "24px",
           borderRadius: "2px",
-          borderColor: "rgba(255, 255, 255, 0.8)",
+          borderColor: "rgba(255, 255, 255, 0.7)",
+          boxShadow: "none",
         };
       case "hidden":
         return {
@@ -120,60 +120,65 @@ const Cursor = () => {
         };
       default:
         return {
-          scale: clicked ? 1.2 : 1,
-          width: "40px",
-          height: "40px",
-          borderColor: "rgba(255, 255, 255, 0.3)",
+          scale: clicked ? 1.1 : 1,
+          width: "36px",
+          height: "36px",
+          borderColor: "rgba(255, 255, 255, 0.4)",
+          boxShadow: clicked
+            ? "0 0 10px rgba(255, 255, 255, 0.3)"
+            : "0 0 15px rgba(255, 255, 255, 0.15)",
         };
     }
   };
 
   return (
     <>
-      {/* Small dot cursor */}
+      {/* Dot Center */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-50"
         animate={{
-          x: position.x - 4,
-          y: position.y - 4,
+          x: position.x - 3,
+          y: position.y - 3,
           opacity: hidden ? 0 : 1,
-          scale: clicked ? 0.8 : 1,
+          scale: clicked ? 0.7 : 1,
         }}
         transition={{ duration: 0.1 }}
         style={{
-          width: "8px",
-          height: "8px",
+          width: "6px",
+          height: "6px",
           borderRadius: "50%",
-          backgroundColor: "white",
+          backgroundColor: "#fff",
         }}
         data-user={currentUser}
         data-timestamp={currentDateTime}
       />
 
-      {/* Outer cursor ring */}
+      {/* Outer Circle */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50 border-2"
+        className="fixed top-0 left-0 pointer-events-none z-50 border border-solid"
         animate={{
-          x: position.x - 20,
-          y: position.y - 20,
+          x: position.x - 18,
+          y: position.y - 18,
           opacity: hidden ? 0 : 1,
           ...getCursorStyles(),
         }}
         transition={{ duration: 0.15 }}
         style={{
           borderRadius: cursorMode === "text" ? "2px" : "50%",
+          background:
+            cursorMode === "link" ? "rgba(99, 102, 241, 0.05)" : "transparent",
         }}
       />
 
-      {/* Debug info - only visible in development */}
+      {/* Debug info (dev only) */}
       {process.env.NODE_ENV === "development" && (
-        <div className="fixed bottom-4 left-4 text-xs bg-gray-900/70 backdrop-blur-sm rounded-md p-2 text-gray-400 border border-gray-700/30 pointer-events-none">
+        <div className="fixed bottom-4 left-4 text-xs bg-black/60 backdrop-blur-sm text-gray-200 p-2 rounded pointer-events-none">
           <div>User: {currentUser}</div>
           <div>Time: {currentDateTime}</div>
           <div>Clicks: {clickCount}</div>
           <div>Mode: {cursorMode}</div>
           <div>
-            Position: {Math.round(position.x)},{Math.round(position.y)}
+            Position: {Math.round(position.x)}, {Math.round(position.y)}
           </div>
         </div>
       )}

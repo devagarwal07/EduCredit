@@ -11,6 +11,7 @@
     "download-cloud": "curl -o public/textures/earth-clouds.png https://raw.githubusercontent.com/turban/webgl-earth/master/images/cloud.png"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.23.0",
     "@headlessui/react": "^2.2.0",
     "@react-spring/web": "^9.7.5",
     "@react-three/drei": "^10.0.3",

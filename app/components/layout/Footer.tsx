@@ -28,15 +28,6 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           <div className="space-y-4">
             <Link href="/" className="flex items-center space-x-2">
-              <div className="relative w-10 h-10">
-                <Image
-                  src="/logo.svg"
-                  alt="UpSkillr Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain"
-                />
-              </div>
               <span
                 className="text-xl font-bold"
                 style={{

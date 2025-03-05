@@ -31,7 +31,6 @@ export default function Layout({
   return (
     <>
       <Cursor />
-      <Header />
 
       <main className="min-h-screen pt-20">{children}</main>
       <Footer />

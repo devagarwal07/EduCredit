@@ -544,7 +544,7 @@ export default function GlobeVisualization() {
   return (
     <div
       ref={wrapperRef}
-      className="relative w-full overflow-hidden rounded-lg shadow-lg bg-gradient-to-b from-gray-900 to-black"
+      className="relative w-full overflow-hidden rounded-lg shadow-2xl bg-gradient-to-b from-gray-900 to-black"
       style={{ height: canvasHeight }}
       data-user={currentUser}
       data-timestamp={currentDateTime}
