@@ -73,7 +73,6 @@ export default function Home() {
   }
   return (
     <Layout>
-      <FloatingElements />
       <div ref={containerRef} className="relative overflow-hidden">
         {/* Enhanced background with more sophisticated gradient */}
         <motion.div

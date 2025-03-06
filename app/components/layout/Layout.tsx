@@ -30,9 +30,11 @@ export default function Layout({
 
   return (
     <>
+      <Header />
       <Cursor />
 
       <main className="min-h-screen pt-20">{children}</main>
+
       <Footer />
       <ScrollProgress />
     </>

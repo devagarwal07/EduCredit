@@ -20,7 +20,7 @@ import {
   FaCheck,
   FaTimes,
 } from "react-icons/fa";
-
+import Layout from "../components/layout/Layout";
 import VisualizationScene from "../components/3d/VisualizationScene";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
@@ -282,7 +282,7 @@ const CareerGuidancePage = () => {
   }
 
   return (
-    <>
+    <Layout>
       <Head>
         <title>Career Guidance | UpSkillr</title>
         <meta
@@ -1054,9 +1054,7 @@ const CareerGuidancePage = () => {
           </Tab.Group>
         </div>
       </main>
-
-      <Footer />
-    </>
+    </Layout>
   );
 };
 

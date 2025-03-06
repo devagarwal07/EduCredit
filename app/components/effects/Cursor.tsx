@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 
 type CursorMode = "default" | "link" | "button" | "text" | "hidden";
 
@@ -11,23 +11,30 @@ const Cursor = () => {
     return null;
   }
 
-  const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [cursorMode, setCursorMode] = useState<CursorMode>("default");
 
   // Current user data
-  const currentDateTime = "2025-03-03 19:18:26";
+  const currentDateTime = "2025-03-06 15:51:38";
   const currentUser = "vkhare2909";
 
   // Analytics tracking
   const [clickCount, setClickCount] = useState(0);
   const [lastActive, setLastActive] = useState(currentDateTime);
 
+  // Use motion values for smoother animations
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const springConfig = { stiffness: 1000, damping: 30 };
+  const springX = useSpring(x, springConfig);
+  const springY = useSpring(y, springConfig);
+
   useEffect(() => {
     // Track cursor position
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      x.set(e.clientX);
+      y.set(e.clientY);
       setLastActive(new Date().toISOString());
     };
 
@@ -84,7 +91,7 @@ const Cursor = () => {
       window.removeEventListener("mouseleave", handleMouseLeave);
       observer.disconnect();
     };
-  }, []);
+  }, [x, y]);
 
   // Hide on touch devices
   if (window.matchMedia("(pointer: coarse)").matches) {
@@ -133,60 +140,25 @@ const Cursor = () => {
 
   return (
     <>
-      {/* Dot Center */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50"
-        animate={{
-          x: position.x - 3,
-          y: position.y - 3,
-          opacity: hidden ? 0 : 1,
-          scale: clicked ? 0.7 : 1,
-        }}
-        transition={{ duration: 0.1 }}
-        style={{
-          width: "6px",
-          height: "6px",
-          borderRadius: "50%",
-          backgroundColor: "#fff",
-        }}
-        data-user={currentUser}
-        data-timestamp={currentDateTime}
-      />
-
       {/* Outer Circle */}
       <motion.div
         className="fixed top-0 left-0 pointer-events-none z-50 border border-solid"
-        animate={{
-          x: position.x - 18,
-          y: position.y - 18,
-          opacity: hidden ? 0 : 1,
-          ...getCursorStyles(),
-        }}
-        transition={{ duration: 0.15 }}
         style={{
+          x: springX,
+          y: springY,
+          width: getCursorStyles().width,
+          height: getCursorStyles().height,
+          marginLeft: `-${parseInt(getCursorStyles().width || "0") / 2}px`,
+          marginTop: `-${parseInt(getCursorStyles().height || "0") / 2}px`,
+          ...getCursorStyles(),
           borderRadius: cursorMode === "text" ? "2px" : "50%",
           background:
-            cursorMode === "link" ? "rgba(99, 102, 241, 0.05)" : "transparent",
+            cursorMode === "link"
+              ? "rgba(99, 102, 241, 0.05)"
+              : "rgba(99, 102, 241, 2)",
+          transition: "all 0.15s ease-out",
         }}
       />
-
-      {/* Debug info (dev only) */}
-      {process.env.NODE_ENV === "development" && (
-        <div className="fixed bottom-4 left-4 text-xs bg-black/60 backdrop-blur-sm text-gray-200 p-2 rounded pointer-events-none">
-          <div>User: {currentUser}</div>
-          <div>Time: {currentDateTime}</div>
-          <div>Clicks: {clickCount}</div>
-          <div>Mode: {cursorMode}</div>
-          <div>
-            Position: {Math.round(position.x)}, {Math.round(position.y)}
-          </div>
-        </div>
-      )}
-
-      {/* Hidden accessibility info */}
-      <div className="sr-only" aria-live="polite">
-        Cursor tracking enabled for {currentUser}. Last active: {lastActive}.
-      </div>
     </>
   );
 };
