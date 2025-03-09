@@ -142,7 +142,7 @@ const Cursor = () => {
     <>
       {/* Outer Circle */}
       <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-50 border border-solid"
+        className="fixed top-0 left-0 pointer-events-none z-100 border border-solid"
         style={{
           x: springX,
           y: springY,
