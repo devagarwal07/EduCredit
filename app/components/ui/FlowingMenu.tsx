@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
 interface MenuItemProps {
@@ -25,11 +25,26 @@ const FlowingMenu: React.FC<FlowingMenuProps> = ({ items = [] }) => {
 };
 
 const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
-  const itemRef = React.useRef<HTMLDivElement>(null);
-  const marqueeRef = React.useRef<HTMLDivElement>(null);
-  const marqueeInnerRef = React.useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null);
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  const marqueeInnerRef = useRef<HTMLDivElement>(null);
+  const marqueeContentRef = useRef<HTMLDivElement>(null);
 
   const animationDefaults = { duration: 0.6, ease: "expo" };
+
+  // Initialize marquee animation
+  useEffect(() => {
+    if (!marqueeContentRef.current) return;
+
+    // Set up continuous animation for the marquee
+    gsap.to(marqueeContentRef.current, {
+      xPercent: -50,
+      ease: "none",
+      duration: 15,
+      repeat: -1,
+      repeatRefresh: false,
+    });
+  }, [marqueeContentRef]);
 
   const findClosestEdge = (
     mouseX: number,
@@ -71,7 +86,7 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
       rect.height
     );
 
-    const tl = gsap.timeline({ defaults: animationDefaults }) as TimelineMax;
+    const tl = gsap.timeline({ defaults: animationDefaults });
     tl.to(marqueeRef.current, { y: edge === "top" ? "-101%" : "101%" }).to(
       marqueeInnerRef.current,
       { y: edge === "top" ? "101%" : "-101%" }
@@ -79,17 +94,22 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
   };
 
   const repeatedMarqueeContent = React.useMemo(() => {
-    return Array.from({ length: 4 }).map((_, idx) => (
-      <React.Fragment key={idx}>
-        <span className="text-[#060606] uppercase font-normal text-[4vh] leading-[1.2] p-[1vh_1vw_0]">
-          {text}
-        </span>
-        <div
-          className="w-[200px] h-[7vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
-          style={{ backgroundImage: `url(${image})` }}
-        />
-      </React.Fragment>
-    ));
+    // Create more repetitions for smoother looping
+    const contents = [];
+    for (let i = 0; i < 8; i++) {
+      contents.push(
+        <React.Fragment key={i}>
+          <span className="text-[#060606] uppercase font-normal text-[4vh] leading-[1.2] p-[1vh_1vw_0]">
+            {text}
+          </span>
+          <div
+            className="w-[200px] h-[7vh] my-[2em] mx-[2vw] p-[1em_0] rounded-[50px] bg-cover bg-center"
+            style={{ backgroundImage: `url(${image})` }}
+          />
+        </React.Fragment>
+      );
+    }
+    return contents;
   }, [text, image]);
 
   return (
@@ -110,7 +130,10 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
         ref={marqueeRef}
       >
         <div className="h-full w-[200%] flex" ref={marqueeInnerRef}>
-          <div className="flex items-center relative h-full w-[200%] will-change-transform animate-marquee">
+          <div
+            ref={marqueeContentRef}
+            className="flex items-center relative h-full w-[200%] will-change-transform"
+          >
             {repeatedMarqueeContent}
           </div>
         </div>
@@ -119,27 +142,8 @@ const MenuItem: React.FC<MenuItemProps> = ({ link, text, image }) => {
   );
 };
 
-export default FlowingMenu;
+// Add current user and date info as a hidden comment
+// Current User: vkhare2909
+// Last Updated: 2025-03-09 12:50:36
 
-// Note: this is also needed
-// /** @type {import('tailwindcss').Config} */
-// export default {
-//   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-//   theme: {
-//     extend: {
-//       translate: {
-//         '101': '101%',
-//       },
-//       keyframes: {
-//         marquee: {
-//           'from': { transform: 'translateX(0%)' },
-//           'to': { transform: 'translateX(-50%)' }
-//         }
-//       },
-//       animation: {
-//         marquee: 'marquee 15s linear infinite'
-//       }
-//     }
-//   },
-//   plugins: [],
-// };
+export default FlowingMenu;

@@ -22,6 +22,7 @@ import {
   FaCodeBranch,
   FaChartLine,
 } from "react-icons/fa";
+import LoadingSpinner from "../components/ui/LoadingScreen";
 import Layout from "../components/layout/Layout";
 
 const AboutUs = () => {
@@ -30,26 +31,54 @@ const AboutUs = () => {
   const teamSectionRef = useRef<HTMLDivElement>(null);
   const isTeamInView = useInView(teamSectionRef);
   const [trailKey, setTrailKey] = useState(0);
+  const [loading, setLoading] = useState(true);
 
+  // Loading effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Marquee effect - Fixed implementation
   useEffect(() => {
     if (!marqueeRef.current) return;
 
-    const marqueeItems = marqueeRef.current.children;
-    const marqueeWidth = marqueeRef.current.scrollWidth;
-    const clone = marqueeRef.current.innerHTML;
-    marqueeRef.current.innerHTML = clone + clone;
+    // Create a proper clone for the marquee effect
+    const createMarquee = () => {
+      const originalContent = marqueeRef.current!.innerHTML;
+      marqueeRef.current!.innerHTML = originalContent + originalContent;
 
-    let currentPos = 0;
-    const scroll = () => {
-      currentPos -= 1;
-      if (Math.abs(currentPos) >= marqueeWidth) currentPos = 0;
-      marqueeRef.current!.style.transform = `translateX(${currentPos}px)`;
-      requestAnimationFrame(scroll);
+      const scrollWidth = marqueeRef.current!.scrollWidth / 2;
+      let currentPos = 0;
+
+      const scroll = () => {
+        currentPos -= 1;
+        if (Math.abs(currentPos) >= scrollWidth) {
+          currentPos = 0;
+        }
+        if (marqueeRef.current) {
+          marqueeRef.current.style.transform = `translateX(${currentPos}px)`;
+        }
+        requestAnimationFrame(scroll);
+      };
+
+      const animationId = requestAnimationFrame(scroll);
+      return animationId;
     };
 
-    const animationId = requestAnimationFrame(scroll);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
+    // Small delay to ensure content is properly rendered
+    const timeout = setTimeout(() => {
+      const animationId = createMarquee();
+      return () => {
+        cancelAnimationFrame(animationId);
+      };
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [loading]);
 
   // Force rerender of ImageTrail on view
   useEffect(() => {
@@ -218,6 +247,70 @@ const AboutUs = () => {
     },
   ];
 
+  // Custom marquee component to ensure proper functioning
+  const Marquee = ({
+    children,
+    className,
+  }: {
+    children: React.ReactNode;
+    className?: string;
+  }) => {
+    const marqueeContainerRef = useRef<HTMLDivElement>(null);
+    const [containerWidth, setContainerWidth] = useState<number>(0);
+    const [contentWidth, setContentWidth] = useState<number>(0);
+
+    useEffect(() => {
+      if (!marqueeContainerRef.current) return;
+
+      const container = marqueeContainerRef.current;
+      const containerRect = container.getBoundingClientRect();
+      const content = container.firstChild as HTMLElement;
+
+      if (!content) return;
+
+      const contentRect = content.getBoundingClientRect();
+
+      setContainerWidth(containerRect.width);
+      setContentWidth(contentRect.width);
+
+      // Clone content to create seamless loop
+      const clonedContent = content.cloneNode(true);
+      container.appendChild(clonedContent);
+
+      // Calculate animation duration based on content width
+      const speed = 40; // pixels per second
+      const duration = contentRect.width / speed;
+
+      container.style.setProperty("--duration", `${duration}s`);
+    }, []);
+
+    return (
+      <div className="overflow-hidden relative">
+        <div
+          ref={marqueeContainerRef}
+          className={`flex whitespace-nowrap animate-marquee ${
+            className || ""
+          }`}
+          style={{
+            animationDuration: "var(--duration, 30s)",
+            animationTimingFunction: "linear",
+            animationIterationCount: "infinite",
+          }}
+        >
+          <div className="flex whitespace-nowrap">{children}</div>
+        </div>
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-900">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
   return (
     <Layout>
       <div
@@ -294,7 +387,7 @@ const AboutUs = () => {
           </div>
         </section>
 
-        {/* Enhanced Marquee Section */}
+        {/* Enhanced Marquee Section - Fixed Implementation */}
         <div className="bg-gray-800/90 py-8 overflow-hidden w-full relative backdrop-blur-md">
           <div className="absolute inset-0 opacity-15 pointer-events-none">
             <Aurora
@@ -303,21 +396,30 @@ const AboutUs = () => {
               blend={0.3}
             />
           </div>
-          <div
-            ref={marqueeRef}
-            className="whitespace-nowrap font-extrabold text-white text-4xl md:text-7xl py-4"
-            style={{ willChange: "transform" }}
-          >
-            <span className="mx-4 text-purple-400">#</span>
-            <span className="mx-4">INNOVATION</span>
-            <span className="mx-4 text-blue-400">#</span>
-            <span className="mx-4">CREATIVITY</span>
-            <span className="mx-4 text-purple-400">#</span>
-            <span className="mx-4">EXCELLENCE</span>
-            <span className="mx-4 text-blue-400">#</span>
-            <span className="mx-4">PASSION</span>
-            <span className="mx-4 text-purple-400">#</span>
-            <span className="mx-4">TEAMWORK</span>
+
+          <div className="overflow-hidden">
+            <div className="animate-marquee whitespace-nowrap font-extrabold text-white text-4xl md:text-7xl py-4">
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">INNOVATION</span>
+              <span className="mx-4 text-blue-400">#</span>
+              <span className="mx-4">CREATIVITY</span>
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">EXCELLENCE</span>
+              <span className="mx-4 text-blue-400">#</span>
+              <span className="mx-4">PASSION</span>
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">TEAMWORK</span>
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">INNOVATION</span>
+              <span className="mx-4 text-blue-400">#</span>
+              <span className="mx-4">CREATIVITY</span>
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">EXCELLENCE</span>
+              <span className="mx-4 text-blue-400">#</span>
+              <span className="mx-4">PASSION</span>
+              <span className="mx-4 text-purple-400">#</span>
+              <span className="mx-4">TEAMWORK</span>
+            </div>
           </div>
         </div>
 
@@ -343,25 +445,122 @@ const AboutUs = () => {
 
               <PixelCard
                 variant="blue"
-                className="rounded-xl min-h-[400px] relative shadow-lg shadow-blue-900/20"
+                className="rounded-xl min-h-[400px] relative shadow-lg shadow-blue-900/30 hover:shadow-blue-900/50 transition-all duration-500"
               >
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-8 z-10">
-                  <div className="w-24 h-24 bg-blue-600/30 backdrop-blur-md rounded-full flex items-center justify-center mb-8">
-                    <FaLightbulb className="text-4xl text-blue-300" />
+                  {/* Animated background effect with standard classes and inline styles */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20 opacity-50 z-0 rounded-xl"
+                    style={{
+                      animation:
+                        "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                    }}
+                  ></div>
+
+                  {/* Decorative geometric elements */}
+                  <div className="absolute top-5 left-5 w-20 h-20 border-t-2 border-l-2 border-blue-400/30 rounded-tl-xl"></div>
+                  <div className="absolute bottom-5 right-5 w-20 h-20 border-b-2 border-r-2 border-purple-400/30 rounded-br-xl"></div>
+
+                  {/* Icon with enhanced styling */}
+                  <div className="relative w-28 h-28 bg-gradient-to-br from-blue-600/40 to-indigo-600/40 backdrop-blur-xl rounded-full flex items-center justify-center mb-4 shadow-lg shadow-blue-700/20 border border-blue-400/20 transform hover:scale-105 transition-transform duration-300">
+                    <div
+                      className="absolute w-full h-full rounded-full bg-blue-500/10 opacity-75"
+                      style={{
+                        animation:
+                          "ping 3s cubic-bezier(0, 0, 0.2, 1) infinite",
+                      }}
+                    ></div>
+                    <FaLightbulb
+                      className="text-3xl text-blue-300"
+                      style={{
+                        filter: "drop-shadow(0 0 5px rgba(96, 165, 250, 0.5))",
+                        animation: "2s ease-in-out infinite alternate",
+                        animationName: "glow",
+                      }}
+                    />
                   </div>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-purple-300">
+
+                  {/* Enhanced heading with better gradient */}
+                  <h2 className="text-xl md:text-xl font-bold mb-8 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 via-indigo-300 to-purple-300 tracking-tight">
                     Pushing Boundaries Through Innovation
                   </h2>
-                  <p className="text-xl md:text-2xl leading-relaxed z-10 text-center text-gray-100 max-w-3xl">
-                    We are dedicated to creating innovative digital solutions
-                    that empower businesses and individuals to thrive in an
-                    ever-evolving technological landscape. Through our
-                    commitment to excellence, collaboration, and continuous
-                    learning, we strive to deliver products that not only meet
-                    but exceed expectations, making a positive impact on our
-                    clients and communities.
-                  </p>
+
+                  {/* Content with better styling */}
+                  <div className="relative">
+                    <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-lg blur-sm"></div>
+                    <p className="text-sm md:text-sm leading-relaxed z-10 text-center text-gray-100 max-w-3xl relative bg-gray-900/40 backdrop-blur-sm p-6 rounded-lg border border-blue-500/10">
+                      Dedicated to creating innovative digital solutions that
+                      empower businesses to thrive in an ever-evolving
+                      technological landscape.
+                    </p>
+                  </div>
+
+                  {/* Interactive button */}
+                  <button className="mt-6 px-6 py-2.5 bg-gradient-to-r from-blue-600/60 to-indigo-600/60 hover:from-blue-500/60 hover:to-indigo-500/60 backdrop-blur-md rounded-full font-medium transition-all shadow-lg shadow-blue-900/30 hover:shadow-blue-700/40 hover:scale-105 group border border-blue-400/20">
+                    <span className="text-gray-100 flex items-center gap-2">
+                      Learn More
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </span>
+                  </button>
                 </div>
+
+                {/* Animated particle effects with inline styles */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none z-5">
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-2 h-2 bg-blue-400/30 rounded-full"
+                      style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        opacity: 0,
+                        animation: `${3 + Math.random() * 7}s linear infinite`,
+                        animationName: "particleFloat",
+                        animationDelay: `${Math.random() * 5}s`,
+                      }}
+                    ></div>
+                  ))}
+                </div>
+
+                {/* Include necessary CSS animations inline */}
+                <style jsx>{`
+                  @keyframes glow {
+                    0% {
+                      filter: drop-shadow(0 0 2px rgba(96, 165, 250, 0));
+                    }
+                    100% {
+                      filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.7));
+                    }
+                  }
+
+                  @keyframes particleFloat {
+                    0% {
+                      transform: translateY(0) translateX(0);
+                      opacity: 0;
+                    }
+                    50% {
+                      transform: translateY(-50px) translateX(10px);
+                      opacity: 0.8;
+                    }
+                    100% {
+                      transform: translateY(-100px) translateX(20px);
+                      opacity: 0;
+                    }
+                  }
+                `}</style>
               </PixelCard>
             </div>
           </div>
@@ -473,11 +672,11 @@ const AboutUs = () => {
                   className="rounded-xl min-h-[460px] relative shadow-lg shadow-purple-900/20"
                 >
                   <div className="absolute inset-0 z-10 p-8 flex flex-col">
-                    <div className="w-18 h-18 mx-auto mb-6 rounded-full overflow-hidden relative shadow-lg shadow-purple-900/20 border-2 border-indigo-500/30">
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full overflow-hidden relative shadow-lg shadow-purple-900/20 border-2 border-indigo-500/30">
                       <img
                         src={member.image}
                         alt={member.name}
-                        className="w-18 h-18 object-cover rounded-full"
+                        className="w-full h-full object-cover rounded-full"
                       />
                     </div>
                     <h3 className="text-2xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-purple-300">
@@ -582,7 +781,7 @@ const AboutUs = () => {
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-blue-900/30 backdrop-blur-md">
                     <h3 className="font-bold text-xl mb-4">Email Us</h3>
                     <a
-                      href="mailto:contact@company.com"
+                      href="mailto:lmaowtf@gmail.com"
                       className="text-blue-300 hover:text-blue-200 transition-colors text-lg"
                     >
                       lmaowtf@gmail.com
@@ -627,10 +826,10 @@ const AboutUs = () => {
                   <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-indigo-900/30 backdrop-blur-md">
                     <h3 className="font-bold text-xl mb-4">Call Us</h3>
                     <a
-                      href="tel:+11234567890"
+                      href="tel:+919394394394"
                       className="text-blue-300 hover:text-blue-200 transition-colors text-lg"
                     >
-                      +91 394394394
+                      +91 939 439 4394
                     </a>
                   </div>
                 </div>
@@ -688,9 +887,6 @@ const AboutUs = () => {
         </section>
 
         {/* Hidden accessibility info with updated date and username */}
-        <div className="sr-only" aria-live="polite">
-          Current user: vkhare2909. Last updated: 2025-03-09 09:31:44
-        </div>
       </div>
     </Layout>
   );

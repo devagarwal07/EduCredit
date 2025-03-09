@@ -247,7 +247,7 @@ const CareerGuidancePage = () => {
         experience: "3 years",
         profileCompleteness: 85,
       });
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);

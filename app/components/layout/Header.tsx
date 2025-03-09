@@ -80,7 +80,7 @@ export default function Header() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-200 py-4 px-6 transition-all duration-300 ${
           scrolled
             ? "bg-gray-900/80 backdrop-blur-lg shadow-lg"
             : "bg-transparent"

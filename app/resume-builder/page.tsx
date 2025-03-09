@@ -221,7 +221,7 @@ const ResumeBuilder = () => {
     // Simulate API data loading
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 1500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
