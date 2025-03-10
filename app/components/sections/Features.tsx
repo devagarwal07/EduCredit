@@ -276,21 +276,6 @@ export default function Features() {
 
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
-          <motion.div
-            className="inline-flex items-center mb-3 px-3 py-1 bg-gray-800/70 rounded-full"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            <span className="text-xs font-medium text-gray-400 mr-2">
-              Last updated:
-            </span>
-            <span className="text-xs font-medium text-indigo-400">
-              {currentTime}
-            </span>
-          </motion.div>
-
           <motion.span
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}

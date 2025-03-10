@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { FaBars, FaTimes } from "react-icons/fa";
+import ScrollProgress from "../ui/ScrollProgress";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -80,7 +81,7 @@ export default function Header() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-200 py-4 px-6 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 py-4 px-6 transition-all duration-300 ${
           scrolled
             ? "bg-gray-900/80 backdrop-blur-lg shadow-lg"
             : "bg-transparent"
@@ -89,6 +90,7 @@ export default function Header() {
           boxShadow: scrolled ? "0 4px 30px rgba(0, 0, 0, 0.1)" : "none",
         }}
       >
+        <ScrollProgress />
         <div className="container mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center space-x-2">
             <span

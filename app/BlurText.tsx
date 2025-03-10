@@ -24,13 +24,10 @@ const BlurText: React.FC<BlurTextProps> = ({
   duration = 800,
   onAnimationComplete,
 }) => {
-  // Handle empty text case
-  if (!text) return <div className={className}></div>;
-
-  const elements = animateBy === "words" ? text.split(" ") : text.split("");
   const [inView, setInView] = useState(false);
   const [animationComplete, setAnimationComplete] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
+  const elements = animateBy === "words" ? text.split(" ") : text.split("");
 
   useEffect(() => {
     if (!ref.current) return;
@@ -78,27 +75,33 @@ const BlurText: React.FC<BlurTextProps> = ({
       className={className}
       style={{ display: "flex", flexWrap: "wrap" }}
     >
-      {elements.map((element, index) => (
-        <span
-          key={index}
-          className={`blur-text-element ${inView ? "animate-in" : ""}`}
-          style={{
-            display: "inline-block",
-            transitionProperty: "opacity, filter, transform",
-            transitionDuration: `${duration}ms`,
-            transitionTimingFunction: "cubic-bezier(0.25, 0.1, 0.25, 1.0)",
-            transitionDelay: `${index * delay}ms`,
-            opacity: inView ? 1 : 0,
-            filter: inView ? "blur(0px)" : "blur(10px)",
-            transform: inView
-              ? "translate3d(0, 0, 0)"
-              : `translate3d(0, ${direction === "top" ? "-50px" : "50px"}, 0)`,
-          }}
-        >
-          {element === " " ? "\u00A0" : element}
-          {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
-        </span>
-      ))}
+      {text ? (
+        elements.map((element, index) => (
+          <span
+            key={index}
+            className={`blur-text-element ${inView ? "animate-in" : ""}`}
+            style={{
+              display: "inline-block",
+              transitionProperty: "opacity, filter, transform",
+              transitionDuration: `${duration}ms`,
+              transitionTimingFunction: "cubic-bezier(0.25, 0.1, 0.25, 1.0)",
+              transitionDelay: `${index * delay}ms`,
+              opacity: inView ? 1 : 0,
+              filter: inView ? "blur(0px)" : "blur(10px)",
+              transform: inView
+                ? "translate3d(0, 0, 0)"
+                : `translate3d(0, ${
+                    direction === "top" ? "-50px" : "50px"
+                  }, 0)`,
+            }}
+          >
+            {element === " " ? "\u00A0" : element}
+            {animateBy === "words" && index < elements.length - 1 && "\u00A0"}
+          </span>
+        ))
+      ) : (
+        <span className={className}></span>
+      )}
 
       <style jsx global>{`
         @keyframes blur-text-fade-in {

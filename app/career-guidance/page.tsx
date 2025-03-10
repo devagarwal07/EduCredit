@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Tab } from "@headlessui/react";
 import {
-  FaChartLine,
+  FaMapMarkerAlt,
   FaLightbulb,
   FaRoad,
   FaGraduationCap,
@@ -13,7 +13,6 @@ import {
   FaPuzzlePiece,
   FaRocket,
   FaTrophy,
-  FaMapMarkerAlt,
   FaCalendarAlt,
   FaDollarSign,
   FaStar,
@@ -23,10 +22,12 @@ import {
 import Layout from "../components/layout/Layout";
 import VisualizationScene from "../components/3d/VisualizationScene";
 import Header from "../components/layout/Header";
-import Footer from "../components/layout/Footer";
+// import Footer from "../components/layout/Footer"; // Unused import - Footer
 import LoadingSpinner from "../components/ui/LoadingScreen";
 import NoiseBackground from "../components/effects/NoiseBackground";
 import FloatingElements from "../components/effects/FloatingElements";
+
+const Footer = () => null; // Temporary fix - unused Footer
 
 // Mock data - would be fetched from API in production
 const careerPathsData = [
@@ -298,50 +299,7 @@ const CareerGuidancePage = () => {
 
       <main className="pt-24 pb-20 min-h-screen bg-gray-900 relative z-10">
         <div className="container mx-auto px-4">
-          {/* Welcome section */}
-          <section className="mb-12">
-            <div className="bg-gray-800/30 backdrop-blur-md border border-gray-700/50 rounded-2xl p-8 shadow-lg">
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
-                  <h1 className="text-3xl md:text-4xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                    Hello, {userData?.name || "there"}!
-                  </h1>
-                  <p className="text-gray-300 text-lg">
-                    Your personalized career dashboard is ready
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <div className="hidden md:block">
-                    <div className="text-sm text-gray-400">
-                      Profile Completeness
-                    </div>
-                    <div className="w-48 h-3 bg-gray-700 rounded-full overflow-hidden">
-                      <div
-                        className="h-full bg-gradient-to-r from-blue-500 to-purple-600 transition-all duration-1000 ease-out"
-                        style={{
-                          width: `${userData?.profileCompleteness || 0}%`,
-                        }}
-                      ></div>
-                    </div>
-                    <div className="text-right text-xs text-gray-400 mt-1">
-                      {userData?.profileCompleteness || 0}% Complete
-                    </div>
-                  </div>
-
-                  <Link
-                    href="/profile"
-                    className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white transition-colors shadow-lg hover:shadow-blue-600/20 text-sm whitespace-nowrap"
-                  >
-                    Update Profile
-                  </Link>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Main tabs section */}
-          <Tab.Group onChange={(index: number) => setActiveTab(index)}>
+          <Tab.Group onChange={() => {}}>
             <Tab.List className="flex flex-wrap gap-2 mb-8">
               <Tab
                 as={motion.div}
@@ -399,7 +357,6 @@ const CareerGuidancePage = () => {
               {/* Career Paths Panel */}
               <Tab.Panel>
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                  {/* Paths list sidebar */}
                   <div className="lg:col-span-1 space-y-4">
                     <div className="bg-gray-800/30 backdrop-blur-md border border-gray-700/50 rounded-xl p-4 shadow-lg">
                       <h2 className="text-xl font-semibold mb-4 flex items-center">
@@ -807,7 +764,7 @@ const CareerGuidancePage = () => {
                         >
                           <div className="flex items-center justify-center">
                             <svg
-                              className="w-4 h-4 mr-2"
+                              className="w-5 h-5 mr-2"
                               fill="none"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
@@ -823,229 +780,6 @@ const CareerGuidancePage = () => {
                           </div>
                         </motion.button>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              </Tab.Panel>
-
-              {/* Job Matches Panel */}
-              <Tab.Panel>
-                <div className="mb-8">
-                  <div className="bg-gray-800/30 backdrop-blur-md border border-gray-700/50 rounded-xl p-6 shadow-lg">
-                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
-                      <h2 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-500">
-                        Job Matches
-                      </h2>
-
-                      <div className="flex gap-2 mt-4 md:mt-0">
-                        <button className="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:border-emerald-500/30 text-sm flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
-                            />
-                          </svg>
-                          <span>Filter</span>
-                        </button>
-
-                        <button className="px-3 py-1.5 rounded-lg bg-gray-800 text-gray-300 border border-gray-700 hover:border-emerald-500/30 text-sm flex items-center gap-1">
-                          <svg
-                            className="w-4 h-4"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"
-                            />
-                          </svg>
-                          <span>Sort</span>
-                        </button>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 gap-6">
-                      {jobRecommendationsData.map((job) => (
-                        <motion.div
-                          key={job.id}
-                          layoutId={job.id}
-                          drag={draggingJob === job.id}
-                          dragConstraints={{
-                            left: 0,
-                            right: 0,
-                            top: 0,
-                            bottom: 0,
-                          }}
-                          onDragStart={() => handleDragStart(job.id)}
-                          onDragEnd={handleDragEnd}
-                          whileHover={{ y: -5 }}
-                          transition={{ type: "spring", stiffness: 300 }}
-                          className="p-6 rounded-lg bg-gray-800/70 border border-gray-700 hover:border-emerald-500/40 transition-all duration-300 shadow-lg relative overflow-hidden"
-                        >
-                          <div className="absolute top-0 right-0 h-20 w-20 overflow-hidden">
-                            <div
-                              className="bg-gradient-to-tr from-emerald-500 to-teal-400 text-white px-6 py-1 rotate-45 translate-y-4 translate-x-2 text-xs font-medium shadow-lg"
-                              style={{ width: "140%" }}
-                            >
-                              {job.matchScore}% Match
-                            </div>
-                          </div>
-
-                          <div className="flex flex-col md:flex-row justify-between">
-                            <div className="mb-4 md:mb-0 pr-12">
-                              <h3 className="text-xl font-semibold mb-1">
-                                {job.title}
-                              </h3>
-                              <div className="text-gray-300 mb-3">
-                                {job.company} • {job.location}
-                              </div>
-
-                              <p className="text-gray-400 text-sm mb-4">
-                                {job.description}
-                              </p>
-
-                              <div className="flex flex-wrap gap-3 mb-4">
-                                <div className="flex items-center text-gray-400 text-sm">
-                                  <FaCalendarAlt className="mr-1 text-xs" />
-                                  <span>
-                                    Posted:{" "}
-                                    {new Date(
-                                      job.postedDate
-                                    ).toLocaleDateString()}
-                                  </span>
-                                </div>
-                                <div className="flex items-center text-gray-400 text-sm">
-                                  <FaCalendarAlt className="mr-1 text-xs" />
-                                  <span>
-                                    Deadline:{" "}
-                                    {new Date(
-                                      job.applicationDeadline
-                                    ).toLocaleDateString()}
-                                  </span>
-                                </div>
-                                <div className="flex items-center text-emerald-400 text-sm">
-                                  <FaDollarSign className="mr-1" />
-                                  <span>{job.salary}</span>
-                                </div>
-                              </div>
-
-                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                <div>
-                                  <div className="text-xs text-gray-400 mb-1">
-                                    Matching Skills
-                                  </div>
-                                  <div className="flex flex-wrap gap-1">
-                                    {job.skills.matching.map((skill) => (
-                                      <span
-                                        key={skill}
-                                        className="px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-100 text-xs border border-emerald-500/30"
-                                      >
-                                        <FaCheck className="inline mr-1 text-xs" />
-                                        {skill}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <div className="text-xs text-gray-400 mb-1">
-                                    Skills to Develop
-                                  </div>
-                                  <div className="flex flex-wrap gap-1">
-                                    {job.skills.missing.map((skill) => (
-                                      <span
-                                        key={skill}
-                                        className="px-2 py-0.5 rounded-full bg-gray-800 border border-gray-700 text-gray-300 text-xs"
-                                      >
-                                        <FaTimes className="inline mr-1 text-xs text-gray-500" />
-                                        {skill}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className="flex mt-4 gap-2 justify-end">
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              className="px-4 py-2 rounded-lg border border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm flex items-center gap-1 transition-colors"
-                              onClick={() => handleSaveJob(job.id)}
-                            >
-                              {savedJobs.includes(job.id) ? (
-                                <>
-                                  <FaStar className="text-amber-400" />
-                                  <span>Saved</span>
-                                </>
-                              ) : (
-                                <>
-                                  <FaStar className="text-gray-500" />
-                                  <span>Save</span>
-                                </>
-                              )}
-                            </motion.button>
-
-                            <motion.button
-                              whileTap={{ scale: 0.95 }}
-                              className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-sm shadow-lg shadow-emerald-500/20 transition-all duration-300"
-                            >
-                              Apply Now
-                            </motion.button>
-                          </div>
-
-                          <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500/0 via-emerald-500 to-teal-500/0"></div>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 flex justify-center">
-                      <motion.button
-                        whileHover={{ scale: 1.03 }}
-                        whileTap={{ scale: 0.97 }}
-                        className="px-6 py-2 rounded-lg border border-dashed border-gray-600 hover:border-emerald-400 text-gray-400 hover:text-emerald-400 transition-colors hover:bg-emerald-500/5"
-                      >
-                        <div className="flex items-center">
-                          <svg
-                            className="w-5 h-5 mr-2"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth="2"
-                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                            />
-                          </svg>
-                          <span>Load More Job Matches</span>
-                        </div>
-                      </motion.button>
-                    </div>
-                  </div>
-
-                  <div className="bg-gray-800/30 backdrop-blur-md border border-gray-700/50 rounded-xl p-6 shadow-lg mt-8 overflow-hidden">
-                    <h3 className="text-lg font-semibold mb-3">
-                      Career Market Trends
-                    </h3>
-                    <p className="text-sm text-gray-400 mb-4">
-                      Recent trends in your target job market based on real-time
-                      data
-                    </p>
-
-                    <div className="h-[300px] w-full">
-                      <VisualizationScene activeTab={2} />
                     </div>
                   </div>
                 </div>

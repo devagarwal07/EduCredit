@@ -106,22 +106,6 @@ export default function CareerVisualization() {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16 fade-in-up">
           {/* User and time badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-block mb-4"
-          >
-            <div className="flex items-center space-x-2 bg-gray-800/50 backdrop-blur-md rounded-full px-4 py-1.5 border border-gray-700/30">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-gray-300">
-                <span className="font-medium text-indigo-400">
-                  {currentUser}
-                </span>{" "}
-                • {currentDateTime} UTC
-              </span>
-            </div>
-          </motion.div>
 
           <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider">
             Immersive Experience
@@ -217,10 +201,6 @@ export default function CareerVisualization() {
               </motion.button>
 
               {/* Last interaction info */}
-              <div className="mt-4 pt-4 border-t border-gray-800 flex items-center justify-between text-xs text-gray-500">
-                <span>Last interaction: {currentUser}</span>
-                <span>{currentDateTime}</span>
-              </div>
             </motion.div>
           </div>
 
@@ -235,12 +215,6 @@ export default function CareerVisualization() {
                 fill
                 className="object-cover"
               />
-
-              {/* User indicator on the visualization */}
-              <div className="absolute top-3 right-3 bg-black/40 backdrop-blur-sm rounded-md px-2 py-1 text-xs text-gray-300 border border-gray-700/30 flex items-center">
-                <div className="w-1.5 h-1.5 bg-green-400 rounded-full mr-1.5"></div>
-                <span>Viewing: {currentUser}</span>
-              </div>
             </motion.div>
           </div>
         </div>

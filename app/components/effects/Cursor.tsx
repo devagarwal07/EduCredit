@@ -6,22 +6,11 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 type CursorMode = "default" | "link" | "button" | "text" | "hidden";
 
 const Cursor = () => {
-  // Ensure no rendering on server
-  if (typeof window === "undefined") {
-    return null;
-  }
-
   const [hidden, setHidden] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [cursorMode, setCursorMode] = useState<CursorMode>("default");
-
-  // Current user data
-  const currentDateTime = "2025-03-06 15:51:38";
-  const currentUser = "vkhare2909";
-
-  // Analytics tracking
   const [clickCount, setClickCount] = useState(0);
-  const [lastActive, setLastActive] = useState(currentDateTime);
+  const [lastActive, setLastActive] = useState(new Date().toISOString());
 
   // Use motion values for smoother animations
   const x = useMotionValue(0);
@@ -93,11 +82,6 @@ const Cursor = () => {
     };
   }, [x, y]);
 
-  // Hide on touch devices
-  if (window.matchMedia("(pointer: coarse)").matches) {
-    return null;
-  }
-
   // Dynamic styles
   const getCursorStyles = () => {
     switch (cursorMode) {
@@ -140,25 +124,29 @@ const Cursor = () => {
 
   return (
     <>
-      {/* Outer Circle */}
-      <motion.div
-        className="fixed top-0 left-0 pointer-events-none z-100 border border-solid"
-        style={{
-          x: springX,
-          y: springY,
-          width: getCursorStyles().width,
-          height: getCursorStyles().height,
-          marginLeft: `-${parseInt(getCursorStyles().width || "0") / 2}px`,
-          marginTop: `-${parseInt(getCursorStyles().height || "0") / 2}px`,
-          ...getCursorStyles(),
-          borderRadius: cursorMode === "text" ? "2px" : "50%",
-          background:
-            cursorMode === "link"
-              ? "rgba(99, 102, 241, 0.05)"
-              : "rgba(99, 102, 241, 2)",
-          transition: "all 0.15s ease-out",
-        }}
-      />
+      {typeof window !== "undefined" && (
+        <>
+          {/* Outer Circle */}
+          <motion.div
+            className="fixed top-0 left-0 pointer-events-none z-200 border border-solid"
+            style={{
+              x: springX,
+              y: springY,
+              width: getCursorStyles().width,
+              height: getCursorStyles().height,
+              marginLeft: `-${parseInt(getCursorStyles().width || "0") / 2}px`,
+              marginTop: `-${parseInt(getCursorStyles().height || "0") / 2}px`,
+              ...getCursorStyles(),
+              borderRadius: cursorMode === "text" ? "2px" : "50%",
+              background:
+                cursorMode === "link"
+                  ? "rgba(99, 102, 241, 0.05)"
+                  : "rgba(99, 102, 241, 2)",
+              transition: "all 0.15s ease-out",
+            }}
+          />
+        </>
+      )}
     </>
   );
 };

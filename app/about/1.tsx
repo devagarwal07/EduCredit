@@ -5,10 +5,10 @@ import {
   motion,
   useScroll,
   useTransform,
-  useSpring,
+  // useSpring, // unused import
   useInView,
 } from "framer-motion";
-import Image from "next/image";
+// import Image from "next/image"; // unused import
 import { FaLinkedinIn, FaGithub, FaTwitter, FaEnvelope } from "react-icons/fa";
 import Footer from "../components/layout/Footer";
 import Layout from "../components/layout/Layout";
@@ -37,10 +37,10 @@ const AboutSection = () => {
     [0, 0.2, 0.8, 1],
     [1, 0.8, 0.8, 0]
   );
-  const smoothProgress = useSpring(scrollYProgress, {
-    damping: 20,
-    stiffness: 100,
-  });
+  // const smoothProgress = useSpring(scrollYProgress, { // unused variable
+  //   damping: 20,
+  //   stiffness: 100,
+  // });
 
   const skillItems = [
     { name: "Frontend Development", level: 90, icon: "🔷" },
@@ -359,7 +359,7 @@ const AboutSection = () => {
                 variants={itemVariants}
                 className="text-gray-300 max-w-3xl mx-auto"
               >
-                I've worked with a wide range of technologies across the
+                I&apos;ve worked with a wide range of technologies across the
                 development stack. Here are some of my core competencies and
                 technologies I use to bring ideas to life.
               </motion.p>
@@ -542,14 +542,14 @@ const AboutSection = () => {
                 variants={itemVariants}
                 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500"
               >
-                Let's Connect
+                Let&apos;s Connect
               </motion.h2>
               <motion.p
                 variants={itemVariants}
                 className="text-gray-300 max-w-3xl mx-auto"
               >
-                I'm always open to discussing new projects, creative ideas, or
-                opportunities to be part of your vision.
+                I&apos;m always open to discussing new projects, creative ideas,
+                or opportunities to be part of your vision.
               </motion.p>
             </div>
 
@@ -860,157 +860,6 @@ const AboutSection = () => {
           </motion.div>
 
           {/* Timestamps for tracking/analytics */}
-        </section>
-
-        {/* Bio section with photo */}
-        <section className="py-20 px-4">
-          <div className="max-w-6xl mx-auto">
-            <motion.div
-              className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-            >
-              <motion.div variants={itemVariants} className="relative">
-                <div className="relative aspect-square max-w-md mx-auto">
-                  {/* Image mask with animated gradient border */}
-                  <div className="absolute inset-0 p-2">
-                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
-                      <motion.div
-                        className="w-[500%] h-[500%] absolute -top-[200%] -left-[200%]"
-                        animate={{
-                          rotate: [0, 360],
-                        }}
-                        transition={{
-                          duration: 10,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        style={{
-                          background:
-                            "conic-gradient(from 0deg, transparent 0deg, #3b82f6 72deg, #8b5cf6 144deg, #10b981 216deg, #3b82f6 288deg, transparent 360deg)",
-                        }}
-                      />
-                    </div>
-                  </div>
-
-                  {/* Main image */}
-                  <div className="relative z-10 h-full rounded-2xl overflow-hidden border-4 border-gray-900">
-                    <Image
-                      src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                      alt="Vishal Khare"
-                      width={500}
-                      height={500}
-                      className="w-full h-full object-cover"
-                      placeholder="blur"
-                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN88P/BfwAJsAP0iRUF9AAAAABJRU5ErkJggg=="
-                    />
-
-                    {/* Image overlay with gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-40" />
-                  </div>
-
-                  {/* Floating design elements */}
-                  <motion.div
-                    className="absolute -bottom-6 -right-6 w-24 h-24 rounded-xl bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg shadow-blue-500/20 flex items-center justify-center text-white font-bold text-3xl"
-                    animate={{
-                      rotate: [0, 10, 0, -10, 0],
-                      y: [0, -10, 0, -5, 0],
-                    }}
-                    transition={{
-                      duration: 8,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <div className="bg-gray-900/80 backdrop-blur-sm w-[90%] h-[90%] rounded-lg flex items-center justify-center">
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                        VK
-                      </span>
-                    </div>
-                  </motion.div>
-
-                  <motion.div
-                    className="absolute -top-4 -left-4 w-20 h-20 rounded-full bg-emerald-500/20 backdrop-blur-sm border border-emerald-500/30 flex items-center justify-center"
-                    animate={{
-                      y: [0, 10, 0, 5, 0],
-                    }}
-                    transition={{
-                      duration: 6,
-                      repeat: Infinity,
-                      delay: 1,
-                      ease: "easeInOut",
-                    }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-10 w-10 text-emerald-400"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              <motion.div variants={itemVariants} className="space-y-6">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                  My Story & Journey
-                </h2>
-
-                <div className="space-y-4 text-gray-300">
-                  <p>
-                    With over 7 years of experience in the tech industry, I've
-                    had the privilege of working across the entire development
-                    stack, from designing intuitive user interfaces to
-                    architecting robust backend systems.
-                  </p>
-                  <p>
-                    My journey began with a deep fascination for creating
-                    digital experiences that feel natural and engaging. This
-                    passion led me through various roles - from frontend
-                    developer to UI/UX designer to full-stack engineer.
-                  </p>
-                  <p>
-                    I believe that great products happen at the intersection of
-                    beautiful design, innovative technology, and human-centered
-                    thinking. This philosophy guides my approach to every
-                    project I take on.
-                  </p>
-                  <p>
-                    When I'm not coding or designing, you can find me exploring
-                    the latest advancements in AI, contributing to open-source
-                    projects, or hiking the beautiful trails around San
-                    Francisco.
-                  </p>
-                </div>
-
-                <div className="pt-4">
-                  <h3 className="font-semibold mb-3">Tech Philosophy</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 rounded-full bg-gray-800/50 border border-gray-700/30 text-gray-300 text-sm">
-                      User-Centered Design
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-gray-800/50 border border-gray-700/30 text-gray-300 text-sm">
-                      Clean Code
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-gray-800/50 border border-gray-700/30 text-gray-300 text-sm">
-                      Performance First
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-gray-800/50 border border-gray-700/30 text-gray-300 text-sm">
-                      Continuous Learning
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.div>
-          </div>
         </section>
         <Footer />
       </div>

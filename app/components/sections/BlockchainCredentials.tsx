@@ -87,16 +87,6 @@ export default function BlockchainCredentials() {
             className="space-y-6"
           >
             {/* User timestamp badge */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="inline-flex items-center space-x-2 bg-gray-800/60 rounded-full px-3 py-1 text-xs"
-            >
-              <span className="text-indigo-400 font-medium">{currentUser}</span>
-              <span className="w-1 h-1 rounded-full bg-gray-500"></span>
-              <span className="text-gray-400">{currentDateTime}</span>
-            </motion.div>
 
             <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider">
               Verifiable Achievements
@@ -274,14 +264,6 @@ export default function BlockchainCredentials() {
 
         <div className="mt-20 pt-10 border-t border-gray-800">
           <div className="text-center mb-8">
-            <div className="inline-flex items-center mb-3 px-3 py-1 bg-gray-800/70 rounded-full">
-              <span className="text-xs font-medium text-gray-400 mr-2">
-                Last verification:
-              </span>
-              <span className="text-xs font-medium text-indigo-400">
-                {currentDateTime}
-              </span>
-            </div>
             <h3 className="text-2xl font-bold mb-2">Verification Portal</h3>
             <p className="text-gray-400 max-w-2xl mx-auto">
               Employers can easily verify your credentials using our blockchain

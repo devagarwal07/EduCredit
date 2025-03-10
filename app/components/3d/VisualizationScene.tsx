@@ -300,7 +300,8 @@ const SkillForest = ({ isActive }: { isActive: boolean }) => {
       {/* User legend */}
       <Html position={[0, 1.3, 0]} center>
         <div className="bg-black/40 backdrop-blur-sm rounded px-2 py-1 text-[8px]">
-          <span className="text-yellow-300">★</span> = {currentUser}'s skills
+          <span className="text-yellow-300">★</span> = {currentUser}&apos;s
+          skills
         </div>
       </Html>
     </group>

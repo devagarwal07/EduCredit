@@ -247,61 +247,62 @@ const AboutUs = () => {
     },
   ];
 
-  // Custom marquee component to ensure proper functioning
-  const Marquee = ({
-    children,
-    className,
-  }: {
-    children: React.ReactNode;
-    className?: string;
-  }) => {
-    const marqueeContainerRef = useRef<HTMLDivElement>(null);
-    const [containerWidth, setContainerWidth] = useState<number>(0);
-    const [contentWidth, setContentWidth] = useState<number>(0);
-
-    useEffect(() => {
-      if (!marqueeContainerRef.current) return;
-
-      const container = marqueeContainerRef.current;
-      const containerRect = container.getBoundingClientRect();
-      const content = container.firstChild as HTMLElement;
-
-      if (!content) return;
-
-      const contentRect = content.getBoundingClientRect();
-
-      setContainerWidth(containerRect.width);
-      setContentWidth(contentRect.width);
-
-      // Clone content to create seamless loop
-      const clonedContent = content.cloneNode(true);
-      container.appendChild(clonedContent);
-
-      // Calculate animation duration based on content width
-      const speed = 40; // pixels per second
-      const duration = contentRect.width / speed;
-
-      container.style.setProperty("--duration", `${duration}s`);
-    }, []);
-
-    return (
-      <div className="overflow-hidden relative">
-        <div
-          ref={marqueeContainerRef}
-          className={`flex whitespace-nowrap animate-marquee ${
-            className || ""
-          }`}
-          style={{
-            animationDuration: "var(--duration, 30s)",
-            animationTimingFunction: "linear",
-            animationIterationCount: "infinite",
-          }}
-        >
-          <div className="flex whitespace-nowrap">{children}</div>
-        </div>
-      </div>
-    );
-  };
+  // Custom marquee component to ensure proper functioning - not used, so commented out
+  /* const Marquee = ({
+   *   children,
+   *   className,
+   * }: {
+   *   children: React.ReactNode;
+   *   className?: string;
+   * }) => {
+   *   const marqueeContainerRef = useRef<HTMLDivElement>(null);
+   *   const [containerWidth, setContainerWidth] = useState<number>(0);
+   *   const [contentWidth, setContentWidth] = useState<number>(0);
+   *
+   *   useEffect(() => {
+   *     if (!marqueeContainerRef.current) return;
+   *
+   *     const container = marqueeContainerRef.current;
+   *     const containerRect = container.getBoundingClientRect();
+   *     const content = container.firstChild as HTMLElement;
+   *
+   *     if (!content) return;
+   *
+   *     const contentRect = content.getBoundingClientRect();
+   *
+   *     setContainerWidth(containerRect.width);
+   *     setContentWidth(contentRect.width);
+   *
+   *     // Clone content to create seamless loop
+   *     const clonedContent = content.cloneNode(true);
+   *     container.appendChild(clonedContent);
+   *
+   *     // Calculate animation duration based on content width
+   *     const speed = 40; // pixels per second
+   *     const duration = contentRect.width / speed;
+   *
+   *     container.style.setProperty("--duration", `${duration}s`);
+   *   }, []);
+   *
+   *   return (
+   *     <div className="overflow-hidden relative">
+   *       <div
+   *         ref={marqueeContainerRef}
+   *         className={`flex whitespace-nowrap animate-marquee ${
+   *           className || ""
+   *         }`}
+   *         style={{
+   *           animationDuration: "var(--duration, 30s)",
+   *           animationTimingFunction: "linear",
+   *           animationIterationCount: "infinite",
+   *         }}
+   *       >
+   *         <div className="flex whitespace-nowrap">{children}</div>
+   *       </div>
+   *     </div>
+   *   );
+   * };
+   */
 
   if (loading) {
     return (
