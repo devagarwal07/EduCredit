@@ -28,7 +28,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
 
-// Mock data fetch
 const fetchEmployers = async () => {
   try {
     return [
@@ -287,7 +286,6 @@ export default function EmployersPage() {
   }, []);
 
   useEffect(() => {
-    // Filter employers based on search query and filters
     if (employers.length > 0) {
       let filtered = [...employers];
 
@@ -324,7 +322,6 @@ export default function EmployersPage() {
     }
   }, [searchQuery, industryFilter, programFilter, employers]);
 
-  // Get all unique industries and program types from employers
   const allIndustries = [
     ...new Set(employers.map((employer) => employer.industry)),
   ].sort();
@@ -332,7 +329,6 @@ export default function EmployersPage() {
     ...new Set(employers.flatMap((employer) => employer.programTypes)),
   ].sort();
 
-  // Format date to readable format
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return new Intl.DateTimeFormat("en-US", {
@@ -367,7 +363,6 @@ export default function EmployersPage() {
         </Link>
       </div>
 
-      {/* Search and filter section */}
       <div className="bg-background border border-border rounded-xl shadow-sm p-6 mb-8">
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="flex-1 relative">
@@ -432,7 +427,6 @@ export default function EmployersPage() {
         )}
       </div>
 
-      {/* Employers list */}
       <div className="space-y-8">
         {filteredEmployers.length === 0 ? (
           <div className="bg-muted rounded-xl p-12 text-center">
@@ -662,7 +656,6 @@ export default function EmployersPage() {
         )}
       </div>
 
-      {/* Features section */}
       <div className="mt-16 mb-8">
         <h2 className="text-2xl font-bold mb-8 text-center">
           How Employers Partner With Us
@@ -709,7 +702,6 @@ export default function EmployersPage() {
         </div>
       </div>
 
-      {/* Call to action */}
       <div className="mt-16 bg-background border border-border rounded-xl p-8 md:p-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <div>
@@ -723,6 +715,7 @@ export default function EmployersPage() {
             </p>
             <div className="space-y-3">
               <div className="flex items-center gap-2">
+                <CheckCircle2 className="h-5 w-5 text-primary" />
                 <CheckCircle2 className="h-5 w-5 text-primary" />
                 <span>Access to verified skill profiles</span>
               </div>
@@ -771,7 +764,6 @@ export default function EmployersPage() {
         </div>
       </div>
 
-      {/* Testimonials */}
       <div className="mt-16">
         <h2 className="text-2xl font-bold mb-8 text-center">
           What Employers Say
@@ -843,7 +835,6 @@ export default function EmployersPage() {
         </div>
       </div>
 
-      {/* FAQ Section */}
       <div className="mt-16 mb-12">
         <h2 className="text-2xl font-bold mb-8 text-center">
           Frequently Asked Questions

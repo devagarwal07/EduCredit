@@ -61,12 +61,9 @@ export function SiteHeader() {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const pathname = usePathname();
 
-  // Close mobile nav when path changes
   useEffect(() => {
     setMobileNavOpen(false);
   }, [pathname]);
-
-  // GSAP Animation for header on scroll
 
   useEffect(() => {
     if (typeof window === "undefined") return; // Prevents SSR issues
@@ -94,12 +91,10 @@ export function SiteHeader() {
     return () => ctx.revert(); // Cleanup GSAP animations properly
   }, []);
 
-  // Handle dropdown toggle
   const toggleDropdown = (title: string) => {
     setActiveDropdown((prev) => (prev === title ? null : title));
   };
 
-  // Mobile nav animation variants
   const mobileNavVariants = {
     closed: {
       opacity: 0,
@@ -241,7 +236,6 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
       <AnimatePresence>
         {mobileNavOpen && (
           <motion.div

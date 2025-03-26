@@ -33,13 +33,10 @@ export function LearningPathTimeline({
     const width = svgRef.current.clientWidth;
     const height = svgRef.current.clientHeight;
 
-    // Clear previous visualization
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Create SVG
     const svg = d3.select(svgRef.current);
 
-    // Define timeline data
     const timelineData = [
       ...completedCourses.map((course) => ({
         ...course,
@@ -55,11 +52,10 @@ export function LearningPathTimeline({
         id: `objective-${i}`,
         title: objective,
         type: "objective",
-        date: new Date(Date.now() + (i + 1) * 1000 * 60 * 60 * 24 * 90), // 90 days in the future per objective
+        date: new Date(Date.now() + (i + 1) * 1000 * 60 * 60 * 24 * 90),
       })),
     ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    // Set up scales
     const xScale = d3
       .scaleTime()
       .domain([
@@ -68,7 +64,6 @@ export function LearningPathTimeline({
       ])
       .range([50, width - 50]);
 
-    // Draw timeline axis
     const timelineGroup = svg
       .append("g")
       .attr("transform", `translate(0, ${height / 2})`);
@@ -83,7 +78,6 @@ export function LearningPathTimeline({
       .attr("stroke-width", 2)
       .attr("stroke-opacity", 0.3);
 
-    // Add timeline nodes and labels
     const nodeGroups = timelineGroup
       .selectAll(".node")
       .data(timelineData)
@@ -110,7 +104,6 @@ export function LearningPathTimeline({
         }
       });
 
-    // Vertical lines
     nodeGroups
       .append("line")
       .attr("x1", 0)
@@ -121,7 +114,6 @@ export function LearningPathTimeline({
       .attr("stroke-width", 1)
       .attr("stroke-opacity", 0.3);
 
-    // Text labels
     nodeGroups
       .append("text")
       .attr("text-anchor", "middle")
@@ -130,7 +122,6 @@ export function LearningPathTimeline({
       .attr("fill", "currentColor")
       .attr("font-size", 12)
       .each(function (d) {
-        // Wrap text if too long
         const text = d3.select(this);
         const words = d.title.split(/\s+/);
         interface Line extends Array<string> {}
@@ -165,7 +156,6 @@ export function LearningPathTimeline({
         }
       });
 
-    // Date labels
     nodeGroups
       .append("text")
       .attr("text-anchor", "middle")

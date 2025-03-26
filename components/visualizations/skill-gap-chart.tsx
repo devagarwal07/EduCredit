@@ -20,17 +20,14 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
   useEffect(() => {
     if (!svgRef.current || !skills || !talentPool) return;
 
-    // Clear previous chart
     d3.select(svgRef.current).selectAll("*").remove();
 
-    // Group and average skill levels
     const requiredSkillsMap = new Map<string, number>();
     const availableSkillsMap = new Map<
       string,
       { total: number; count: number }
     >();
 
-    // Process required skills
     skills.forEach((skill) => {
       requiredSkillsMap.set(
         skill.name,
@@ -38,7 +35,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       );
     });
 
-    // Process available skills
     talentPool.forEach((skill) => {
       const existing = availableSkillsMap.get(skill.name) || {
         total: 0,
@@ -50,7 +46,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       });
     });
 
-    // Prepare data for visualization
     const chartData = Array.from(requiredSkillsMap.entries())
       .map(([name, required]) => {
         const available = availableSkillsMap.get(name);
@@ -64,10 +59,9 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
           gap,
         };
       })
-      .sort((a, b) => b.gap - a.gap) // Sort by gap size
-      .slice(0, 7); // Display top 7 skills with gaps
+      .sort((a, b) => b.gap - a.gap)
+      .slice(0, 7);
 
-    // Set up dimensions
     const svg = d3.select(svgRef.current);
     const width = svgRef.current.clientWidth;
     const height = svgRef.current.clientHeight;
@@ -75,21 +69,17 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
 
-    // Set up scales
     const xScale = d3.scaleLinear().domain([0, 100]).range([0, innerWidth]);
-
     const yScale = d3
       .scaleBand()
       .domain(chartData.map((d) => d.name))
       .range([0, innerHeight])
       .padding(0.3);
 
-    // Create the chart group
     const g = svg
       .append("g")
       .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Add grid lines
     g.append("g")
       .attr("class", "grid")
       .selectAll("line")
@@ -103,13 +93,11 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("stroke", "currentColor")
       .attr("stroke-opacity", 0.1);
 
-    // Add x-axis
     const xAxis = g
       .append("g")
       .attr("transform", `translate(0, ${innerHeight})`)
       .call(d3.axisBottom(xScale).ticks(5));
 
-    // Style x-axis
     xAxis.selectAll("line").attr("stroke", "currentColor");
     xAxis.selectAll("path").attr("stroke", "currentColor");
     xAxis
@@ -117,7 +105,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("fill", "currentColor")
       .attr("font-size", "12px");
 
-    // Add x-axis label
     g.append("text")
       .attr("x", innerWidth / 2)
       .attr("y", innerHeight + 40)
@@ -126,10 +113,8 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("font-size", "12px")
       .text("Skill Level (0-100)");
 
-    // Add y-axis
     const yAxis = g.append("g").call(d3.axisLeft(yScale));
 
-    // Style y-axis
     yAxis.selectAll("line").attr("stroke", "currentColor");
     yAxis.selectAll("path").attr("stroke", "currentColor");
     yAxis
@@ -137,7 +122,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("fill", "currentColor")
       .attr("font-size", "12px");
 
-    // Add the bars for required skills
     const requiredBars = g
       .selectAll(".required-bar")
       .data(chartData)
@@ -151,14 +135,12 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("fill", "var(--primary)")
       .attr("opacity", 0.7);
 
-    // Animate required bars
     requiredBars
       .transition()
       .duration(800)
       .delay((_, i) => i * 100)
       .attr("width", (d) => xScale(d.required));
 
-    // Add the bars for available skills
     const availableBars = g
       .selectAll(".available-bar")
       .data(chartData)
@@ -174,14 +156,12 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       )
       .attr("opacity", 0.7);
 
-    // Animate available bars
     availableBars
       .transition()
       .duration(800)
       .delay((_, i) => i * 100 + 400)
       .attr("width", (d) => xScale(d.available));
 
-    // Add the gap highlight
     const gapHighlights = g
       .selectAll(".gap-highlight")
       .data(chartData.filter((d) => d.gap > 0))
@@ -195,7 +175,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("fill", "url(#gap-pattern)")
       .attr("opacity", 0);
 
-    // Create a pattern for the gap highlight
     const pattern = svg
       .append("defs")
       .append("pattern")
@@ -222,14 +201,12 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("stroke-width", 2)
       .attr("opacity", 0.3);
 
-    // Animate gap highlights
     gapHighlights
       .transition()
       .duration(600)
       .delay((_, i) => i * 100 + 1000)
       .attr("opacity", 1);
 
-    // Add labels for the bars
     g.selectAll(".required-label")
       .data(chartData)
       .enter()
@@ -265,7 +242,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .delay((_, i) => i * 100 + 1200)
       .attr("opacity", 1);
 
-    // Add tooltips to highlight gap
     const tooltip = d3
       .select("body")
       .append("div")
@@ -308,7 +284,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
         tooltip.transition().duration(200).style("opacity", 0);
       });
 
-    // Add legend
     const legend = svg
       .append("g")
       .attr("transform", `translate(${margin.left}, ${height - 20})`);
@@ -333,7 +308,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("font-size", "12px")
       .text("Required Level");
 
-    // Available skills legend item
     const availableLegend = legend
       .append("g")
       .attr("transform", `translate(${innerWidth / 3}, 0)`);
@@ -353,7 +327,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("font-size", "12px")
       .text("Available Talent");
 
-    // Gap legend item
     const gapLegend = legend
       .append("g")
       .attr("transform", `translate(${(innerWidth * 2) / 3}, 0)`);
@@ -372,7 +345,6 @@ export function SkillGapChart({ skills, talentPool }: SkillGapChartProps) {
       .attr("font-size", "12px")
       .text("Skill Gap");
 
-    // Cleanup
     return () => {
       tooltip.remove();
     };
