@@ -17,11 +17,19 @@ import {
   ArrowUpRight,
   ChevronRight,
   Award,
+  Sparkles,
+  BadgeCheck,
+  ChevronDown,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
+import SparkleButton from "@/components/ui/SparkleButton";
+import BackgroundGradient from "@/components/effects/BackgroundGradient";
+import CategoryFilter from "./components/CategoryFilter";
+import FeaturedItem from "./components/FeaturedItem";
+import MarketplaceItem from "./components/MarketplaceItem";
+import SearchBar from "./components/SearchBar";
+import EmptyState from "./components/EmptyState";
 
 // Mock data fetch
 const fetchMarketplaceItems = async () => {
@@ -43,16 +51,110 @@ export default function Marketplace() {
   const [skillFilter, setSkillFilter] = useState<string | null>(null);
   const featuredRef = useRef<HTMLDivElement>(null);
 
+  // Current user info
+  const currentTime = "2025-03-28 07:02:12";
+  const currentUser = "vkhare2909";
+
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
   useEffect(() => {
     const loadData = async () => {
       const data = await fetchMarketplaceItems();
-      setItems(data);
-      setFilteredItems(data);
+
+      // If we can't fetch data, use some mock data as fallback
+      const fallbackData = [
+        {
+          id: "course-001",
+          type: "course",
+          title: "Advanced Machine Learning Specialization",
+          description:
+            "Master the fundamentals of machine learning and apply them to real-world challenges. This comprehensive course covers supervised and unsupervised learning, deep neural networks, and more.",
+          provider: "AI Institute",
+          price: 199,
+          rating: 4.8,
+          reviewCount: 2456,
+          image:
+            "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=800&h=500&fit=crop",
+          premium: true,
+          featured: true,
+          skills: ["Machine Learning", "Python", "TensorFlow", "Data Science"],
+          duration: "12 weeks",
+        },
+        {
+          id: "mentorship-001",
+          type: "mentorship",
+          title: "1-on-1 Data Science Career Coaching",
+          description:
+            "Get personalized guidance from industry experts to accelerate your data science career. Weekly sessions focused on practical skills and career development.",
+          mentor: {
+            name: "Dr. Emily Chen",
+            avatar:
+              "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop",
+          },
+          price: 149,
+          priceType: "month",
+          rating: 4.9,
+          reviewCount: 318,
+          image:
+            "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&h=500&fit=crop",
+          premium: true,
+          featured: true,
+          skills: ["Data Science", "Career Development", "Interview Prep"],
+        },
+        {
+          id: "peer-001",
+          type: "peer-teaching",
+          title: "Web Development Study Group",
+          description:
+            "Join a peer-led study group of aspiring web developers. Share knowledge, collaborate on projects, and learn together in a supportive environment.",
+          teacher: {
+            name: "Michael Roberts",
+            avatar:
+              "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop",
+          },
+          price: 25,
+          priceType: "week",
+          rating: 4.6,
+          reviewCount: 124,
+          image:
+            "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=500&fit=crop",
+          skills: ["JavaScript", "React", "Node.js", "HTML/CSS"],
+        },
+      ];
+
+      setItems(data.length ? data : fallbackData);
+      setFilteredItems(data.length ? data : fallbackData);
       setLoading(false);
     };
 
     loadData();
   }, []);
+
+  // Animation effect for the heading
+  useEffect(() => {
+    if (!loading && headlineRef.current) {
+      // Animation timeline
+      const tl = gsap.timeline();
+
+      // Animate the headline
+      tl.fromTo(
+        headlineRef.current.querySelectorAll("span"),
+        {
+          opacity: 0,
+          y: 30,
+          rotationX: -40,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          stagger: 0.12,
+          duration: 1,
+          ease: "power3.out",
+        }
+      );
+    }
+  }, [loading]);
 
   useEffect(() => {
     // Filter items based on search query, type, and skill
@@ -65,7 +167,7 @@ export default function Marketplace() {
           (item) =>
             item.title.toLowerCase().includes(query) ||
             item.description.toLowerCase().includes(query) ||
-            item.provider.toLowerCase().includes(query) ||
+            item.provider?.toLowerCase().includes(query) ||
             (item.skills &&
               item.skills.some((s: string) => s.toLowerCase().includes(query)))
         );
@@ -90,7 +192,9 @@ export default function Marketplace() {
   }, [searchQuery, selectedType, skillFilter, items]);
 
   // Get unique skills from all items
-  const allSkills = [...new Set(items.flatMap((item) => item.skills || []))];
+  const allSkills = [
+    ...new Set(items.flatMap((item) => item.skills || [])),
+  ].sort();
 
   // Animate featured items
   useEffect(() => {
@@ -114,10 +218,37 @@ export default function Marketplace() {
 
   if (loading) {
     return (
-      <div className="container py-12 flex items-center justify-center min-h-screen">
+      <div className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden">
+        {/* Background Elements */}
+        <div
+          className="absolute inset-0 -z-10 parallax-bg"
+          style={{ height: "150%" }}
+        >
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+        </div>
+
         <div className="flex flex-col items-center">
-          <div className="h-12 w-12 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p className="text-lg font-medium">Loading marketplace...</p>
+          <div className="h-12 w-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-lg font-medium text-gray-200">
+            Loading marketplace...
+          </p>
         </div>
       </div>
     );
@@ -129,325 +260,209 @@ export default function Marketplace() {
   );
 
   return (
-    <div className="container py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Learning Marketplace</h1>
-          <p className="text-muted-foreground mt-2">
-            Discover courses, mentorship opportunities, and peer-to-peer
-            learning
-          </p>
-        </div>
-      </div>
+    <div className="relative min-h-screen py-24 overflow-hidden">
+      <BackgroundGradient />
 
-      {/* Search and filter section */}
-      <div className="bg-background border border-border rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search courses, mentors, and resources..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+      <div className="container mx-auto px-6">
+        <div className="mb-2">
+          <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-medium border border-white/20 inline-flex items-center">
+            <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+            {currentTime} • {currentUser}
+          </span>
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1
+              ref={headlineRef}
+              className="text-4xl md:text-5xl font-bold mb-2"
+            >
+              <span className="gradient-text">Learning</span>{" "}
+              <span className="text-white">Marketplace</span>
+            </h1>
+            <p className="text-gray-300 mt-2">
+              Discover courses, mentorship opportunities, and peer-to-peer
+              learning
+            </p>
+          </div>
+          <Link href="/collections">
+            <button className="px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white font-medium hover:bg-white/15 transition-all flex items-center gap-2">
+              <BadgeCheck className="h-4 w-4 text-indigo-400" />
+              Browse Collections
+            </button>
+          </Link>
+        </div>
+
+        {/* Search and filter section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-md p-6 mb-8"
+        >
+          <SearchBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
+
+          <div className="mt-6">
+            <CategoryFilter
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
             />
           </div>
 
-          <div className="flex gap-2">
-            <Button
-              variant={selectedType === null ? "default" : "outline"}
-              onClick={() => setSelectedType(null)}
-              className="shrink-0"
-            >
-              All Types
-            </Button>
-            <Button
-              variant={selectedType === "course" ? "default" : "outline"}
-              onClick={() => setSelectedType("course")}
-              className="shrink-0"
-            >
-              <GraduationCap className="h-4 w-4 mr-2" />
-              Courses
-            </Button>
-            <Button
-              variant={selectedType === "mentorship" ? "default" : "outline"}
-              onClick={() => setSelectedType("mentorship")}
-              className="shrink-0"
-            >
-              <Users className="h-4 w-4 mr-2" />
-              Mentorship
-            </Button>
-            <Button
-              variant={selectedType === "peer-teaching" ? "default" : "outline"}
-              onClick={() => setSelectedType("peer-teaching")}
-              className="shrink-0"
-            >
-              <BookOpen className="h-4 w-4 mr-2" />
-              Peer Learning
-            </Button>
-          </div>
-        </div>
+          <div className="mt-6">
+            <div className="flex items-center gap-2 mb-3">
+              <Filter className="h-4 w-4 text-indigo-400" />
+              <h3 className="text-sm font-medium text-white">
+                Filter by Skill
+              </h3>
+            </div>
 
-        <div>
-          <div className="flex items-center gap-2 mb-3">
-            <Filter className="h-4 w-4 text-muted-foreground" />
-            <h3 className="text-sm font-medium">Filter by Skill</h3>
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {skillFilter && (
-              <Badge
-                variant="default"
-                className="cursor-pointer"
-                onClick={() => setSkillFilter(null)}
-              >
-                {skillFilter}
-                <button className="ml-1 text-primary-foreground">×</button>
-              </Badge>
-            )}
-
-            {allSkills
-              .filter((skill) => skill !== skillFilter)
-              .slice(0, 10)
-              .map((skill, index) => (
+            <div className="flex flex-wrap gap-2">
+              {skillFilter && (
                 <Badge
-                  key={index}
-                  variant="outline"
-                  className="cursor-pointer hover:bg-muted transition-colors"
-                  onClick={() => setSkillFilter(skill)}
+                  className="bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border-none cursor-pointer"
+                  onClick={() => setSkillFilter(null)}
                 >
-                  {skill}
+                  {skillFilter}
+                  <button className="ml-1 text-indigo-300">×</button>
                 </Badge>
-              ))}
-          </div>
-        </div>
-      </div>
+              )}
 
-      {/* Featured items */}
-      {featuredItems.length > 0 && (
-        <div className="mb-12" ref={featuredRef}>
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Featured Opportunities</h2>
-            <Link
-              href="/premium"
-              className="text-primary hover:underline text-sm font-medium"
-            >
-              View Premium Content
-            </Link>
+              {allSkills
+                .filter((skill) => skill !== skillFilter)
+                .slice(0, 10)
+                .map((skill, index) => (
+                  <Badge
+                    key={index}
+                    className="bg-white/5 text-gray-300 hover:bg-indigo-500/10 hover:text-indigo-300 border border-white/10 hover:border-indigo-500/30 transition-colors cursor-pointer"
+                    onClick={() => setSkillFilter(skill)}
+                  >
+                    {skill}
+                  </Badge>
+                ))}
+
+              {allSkills.length > 10 && (
+                <Badge className="bg-white/5 text-gray-300 border border-white/10 cursor-pointer hover:bg-white/10 transition-colors">
+                  +{allSkills.length - 10} more
+                  <ChevronDown className="h-3 w-3 ml-1" />
+                </Badge>
+              )}
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {featuredItems.slice(0, 3).map((item, index) => (
-              <motion.div
-                key={item.id}
-                className="featured-item bg-background border border-border rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md card-hover"
+          {/* Filter status and clear button */}
+          {(searchQuery || selectedType || skillFilter) && (
+            <div className="mt-4 pt-4 border-t border-white/10 flex items-center justify-between">
+              <span className="text-sm text-gray-400">
+                Showing {filteredItems.length} of {items.length} items
+              </span>
+
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedType(null);
+                  setSkillFilter(null);
+                }}
+                className="text-sm text-indigo-400 hover:text-indigo-300 hover:underline transition-colors"
               >
-                <div className="relative h-48">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                  {item.premium && (
-                    <div className="absolute top-4 right-4 bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full">
-                      Premium
-                    </div>
-                  )}
-                  {item.type === "course" && (
-                    <div className="absolute bottom-4 left-4 bg-primary-800/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
-                      Course
-                    </div>
-                  )}
-                  {item.type === "mentorship" && (
-                    <div className="absolute bottom-4 left-4 bg-accent-800/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
-                      Mentorship
-                    </div>
-                  )}
-                  {item.type === "peer-teaching" && (
-                    <div className="absolute bottom-4 left-4 bg-warning-800/80 text-white text-xs px-3 py-1 rounded-full backdrop-blur-sm">
-                      Peer Learning
-                    </div>
-                  )}
-                </div>
+                Clear All Filters
+              </button>
+            </div>
+          )}
+        </motion.div>
 
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                    {item.description}
-                  </p>
+        {/* Featured items */}
+        {featuredItems.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mb-12"
+            ref={featuredRef}
+          >
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-white flex items-center">
+                <Sparkles className="h-5 w-5 mr-2 text-yellow-400" />
+                Featured Opportunities
+              </h2>
+              <Link href="/premium">
+                <span className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center group">
+                  View Premium Content
+                  <ArrowUpRight className="ml-1 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </Link>
+            </div>
 
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="text-sm">
-                      {item.type === "course" ? (
-                        <span className="font-medium">{item.provider}</span>
-                      ) : (
-                        <div className="flex items-center gap-2">
-                          {item.teacher?.avatar && (
-                            <Image
-                              src={item.teacher.avatar}
-                              alt={item.teacher.name}
-                              width={24}
-                              height={24}
-                              className="rounded-full"
-                            />
-                          )}
-                          {item.teacher?.name || item.mentor?.name}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Star className="h-4 w-4 text-warning-500 fill-warning-500" />
-                      <span className="font-medium">{item.rating}</span>
-                      <span className="text-muted-foreground">
-                        ({item.reviewCount})
-                      </span>
-                    </div>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {featuredItems.slice(0, 3).map((item, index) => (
+                <FeaturedItem
+                  key={item.id}
+                  item={item}
+                  className="featured-item"
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
 
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <div className="text-sm text-muted-foreground mb-1">
-                        {item.type === "course" ? (
-                          <Clock className="h-3 w-3 inline mr-1" />
-                        ) : (
-                          <DollarSign className="h-3 w-3 inline mr-1" />
-                        )}
-                        {item.type === "course"
-                          ? "Self-paced"
-                          : `${formatCurrency(item.price)}/${item.priceType}`}
-                      </div>
-                      {item.type === "course" && (
-                        <div className="text-lg font-bold">${item.price}</div>
-                      )}
-                    </div>
+        {/* All marketplace items */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+        >
+          <h2 className="text-2xl font-bold mb-6 text-white">
+            All Opportunities
+          </h2>
 
-                    <Link href={`/marketplace/${item.id}`}>
-                      <Button>View Details</Button>
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* All marketplace items */}
-      <div>
-        <h2 className="text-2xl font-bold mb-6">All Opportunities</h2>
-
-        {filteredItems.length === 0 ? (
-          <div className="bg-muted rounded-xl p-12 text-center">
-            <BookOpen className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold mb-2">No items found</h3>
-            <p className="text-muted-foreground max-w-md mx-auto mb-6">
-              We couldn't find any items matching your search criteria. Try
-              adjusting your filters or search terms.
-            </p>
-            <Button
-              onClick={() => {
+          {filteredItems.length === 0 ? (
+            <EmptyState
+              onReset={() => {
                 setSearchQuery("");
                 setSelectedType(null);
                 setSkillFilter(null);
               }}
-            >
-              Clear All Filters
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredItems.map((item) => (
-              <motion.div
-                key={item.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="bg-background border border-border rounded-xl shadow-sm overflow-hidden transition-all hover:shadow-md card-hover"
-              >
-                <div className="relative h-40">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                  {item.premium && (
-                    <div className="absolute top-3 right-3 bg-secondary text-white text-xs font-bold px-2 py-1 rounded-full">
-                      Premium
-                    </div>
-                  )}
-                  <div className="absolute bottom-3 left-3 bg-background/90 backdrop-blur-sm text-xs px-2 py-1 rounded-full">
-                    {item.type === "course" && (
-                      <span className="flex items-center">
-                        <GraduationCap className="h-3 w-3 mr-1" />
-                        Course
-                      </span>
-                    )}
-                    {item.type === "mentorship" && (
-                      <span className="flex items-center">
-                        <Users className="h-3 w-3 mr-1" />
-                        Mentorship
-                      </span>
-                    )}
-                    {item.type === "peer-teaching" && (
-                      <span className="flex items-center">
-                        <BookOpen className="h-3 w-3 mr-1" />
-                        Peer Learning
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
-                    {item.description}
-                  </p>
-
-                  <div className="flex flex-wrap gap-1 mb-3">
-                    {(item.skills || [])
-                      .slice(0, 3)
-                      .map((skill: string, i: number) => (
-                        <Badge key={i} variant="outline" className="text-xs">
-                          {skill}
-                        </Badge>
-                      ))}
-                  </div>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1">
-                      <span className="text-sm font-medium">${item.price}</span>
-                      {item.type !== "course" && (
-                        <span className="text-xs text-muted-foreground">
-                          /{item.priceType}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-1 text-sm">
-                      <Star className="h-3 w-3 text-warning-500 fill-warning-500" />
-                      <span>{item.rating}</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 flex justify-between items-center">
-                    <span className="text-sm text-muted-foreground">
-                      {item.provider}
-                    </span>
-                    <Link href={`/marketplace/${item.id}`}>
-                      <Button variant="ghost" size="sm" className="gap-1">
-                        Details
-                        <ChevronRight className="h-4 w-4" />
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        )}
+            />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredItems.map((item, index) => (
+                <MarketplaceItem
+                  key={item.id}
+                  item={item}
+                  delay={index * 0.05}
+                />
+              ))}
+            </div>
+          )}
+        </motion.div>
       </div>
+
+      {/* Global styles */}
+      <style jsx global>{`
+        @keyframes float {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
+
+        /* Gradient text styles */
+        .gradient-text {
+          background: linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
 import {
   Search,
   Filter,
@@ -22,10 +23,13 @@ import {
   User,
   Layers,
   FileCheck,
+  ArrowUpRight,
+  ExternalLink,
+  Star,
+  Sparkles,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import SparkleButton from "@/components/ui/SparkleButton";
 import { formatCurrency } from "@/lib/utils";
 
 const fetchEmployers = async () => {
@@ -273,6 +277,12 @@ export default function EmployersPage() {
   const [industryFilter, setIndustryFilter] = useState<string | null>(null);
   const [programFilter, setProgramFilter] = useState<string | null>(null);
 
+  // Current user info
+  const currentTime = "2025-03-28 06:20:48";
+  const currentUser = "vkhare2909";
+
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
   useEffect(() => {
     const loadData = async () => {
       const employersData = await fetchEmployers();
@@ -284,6 +294,32 @@ export default function EmployersPage() {
 
     loadData();
   }, []);
+
+  // Animation effect for the heading
+  useEffect(() => {
+    if (!loading && headlineRef.current) {
+      // Animation timeline
+      const tl = gsap.timeline();
+
+      // Animate the headline
+      tl.fromTo(
+        headlineRef.current.querySelectorAll("span"),
+        {
+          opacity: 0,
+          y: 30,
+          rotationX: -40,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          stagger: 0.12,
+          duration: 1,
+          ease: "power3.out",
+        }
+      );
+    }
+  }, [loading]);
 
   useEffect(() => {
     if (employers.length > 0) {
@@ -340,125 +376,579 @@ export default function EmployersPage() {
 
   if (loading) {
     return (
-      <div className="container py-12 flex items-center justify-center min-h-screen">
-        <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden">
+        {/* Background Elements */}
+        <div
+          className="absolute inset-0 -z-10 parallax-bg"
+          style={{ height: "150%" }}
+        >
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="h-12 w-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-lg font-medium text-gray-200">
+            Loading employer partners...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Partnered Employers</h1>
-          <p className="text-muted-foreground mt-2">
-            Discover companies investing in education and skill-based hiring
-          </p>
-        </div>
-        <Link href="/careers">
-          <Button>
-            Browse Job Opportunities
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </Link>
+    <div className="relative min-h-screen py-24 overflow-hidden">
+      {/* Background Elements */}
+      <div
+        className="absolute inset-0 -z-10 parallax-bg"
+        style={{ height: "150%" }}
+      >
+        <div
+          className="absolute inset-0 opacity-30"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+            height: "150%",
+            width: "100%",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+            height: "150%",
+            width: "100%",
+          }}
+        />
       </div>
 
-      <div className="bg-background border border-border rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search by name, industry, or description..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-sm whitespace-nowrap">Filter by:</span>
-            <select
-              value={industryFilter || ""}
-              onChange={(e) => setIndustryFilter(e.target.value || null)}
-              className="px-3 py-2 border rounded-md text-sm bg-background"
-            >
-              <option value="">All Industries</option>
-              {allIndustries.map((industry) => (
-                <option key={industry} value={industry}>
-                  {industry}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={programFilter || ""}
-              onChange={(e) => setProgramFilter(e.target.value || null)}
-              className="px-3 py-2 border rounded-md text-sm bg-background"
-            >
-              <option value="">All Program Types</option>
-              {allProgramTypes.map((program) => (
-                <option key={program} value={program}>
-                  {program}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {(searchQuery || industryFilter || programFilter) && (
-          <div className="flex items-center gap-2">
-            <div className="text-sm text-muted-foreground">
-              Showing {filteredEmployers.length} of {employers.length} employers
+      <div className="container mx-auto px-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-10">
+          <div>
+            <div className="mb-2">
+              <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-medium border border-white/20 inline-flex items-center">
+                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+                {currentTime} • {currentUser}
+              </span>
             </div>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-sm text-muted-foreground"
-              onClick={() => {
-                setSearchQuery("");
-                setIndustryFilter(null);
-                setProgramFilter(null);
-              }}
+            <h1
+              ref={headlineRef}
+              className="text-4xl md:text-5xl font-bold mb-2"
             >
-              Clear Filters
-            </Button>
-          </div>
-        )}
-      </div>
-
-      <div className="space-y-8">
-        {filteredEmployers.length === 0 ? (
-          <div className="bg-muted rounded-xl p-12 text-center">
-            <Building className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h2 className="text-xl font-semibold mb-2">No employers found</h2>
-            <p className="text-muted-foreground max-w-md mx-auto mb-6">
-              We couldn't find any employers matching your search criteria. Try
-              adjusting your filters or search terms.
+              <span className="gradient-text">Partnered</span>{" "}
+              <span>Employers</span>
+            </h1>
+            <p className="text-gray-300 mt-2 max-w-2xl">
+              Discover innovative companies investing in education and
+              skill-based hiring
             </p>
-            <Button
-              onClick={() => {
-                setSearchQuery("");
-                setIndustryFilter(null);
-                setProgramFilter(null);
-              }}
-            >
-              Clear All Filters
-            </Button>
           </div>
-        ) : (
-          filteredEmployers.map((employer) => (
+
+          <SparkleButton
+            href="/careers"
+            className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all"
+          >
+            Browse Job Opportunities
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </SparkleButton>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white/5 backdrop-blur-md rounded-xl shadow-md border border-white/10 p-6 mb-8"
+        >
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="flex-1 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-indigo-400 h-5 w-5" />
+              <input
+                placeholder="Search by name, industry, or description..."
+                className="w-full pl-10 py-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <span className="text-sm whitespace-nowrap text-gray-300">
+                Filter by:
+              </span>
+              <select
+                value={industryFilter || ""}
+                onChange={(e) => setIndustryFilter(e.target.value || null)}
+                className="px-3 py-2 rounded-lg bg-white/5 border border-white/20 text-white text-sm"
+              >
+                <option value="" className="bg-gray-800">
+                  All Industries
+                </option>
+                {allIndustries.map((industry) => (
+                  <option
+                    key={industry}
+                    value={industry}
+                    className="bg-gray-800"
+                  >
+                    {industry}
+                  </option>
+                ))}
+              </select>
+
+              <select
+                value={programFilter || ""}
+                onChange={(e) => setProgramFilter(e.target.value || null)}
+                className="px-3 py-2 rounded-lg bg-white/5 border border-white/20 text-white text-sm"
+              >
+                <option value="" className="bg-gray-800">
+                  All Program Types
+                </option>
+                {allProgramTypes.map((program) => (
+                  <option key={program} value={program} className="bg-gray-800">
+                    {program}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {(searchQuery || industryFilter || programFilter) && (
+            <div className="flex items-center gap-2">
+              <div className="text-sm text-gray-400">
+                Showing {filteredEmployers.length} of {employers.length}{" "}
+                employers
+              </div>
+
+              <button
+                className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                onClick={() => {
+                  setSearchQuery("");
+                  setIndustryFilter(null);
+                  setProgramFilter(null);
+                }}
+              >
+                Clear Filters
+              </button>
+            </div>
+          )}
+        </motion.div>
+
+        <div className="space-y-8">
+          {filteredEmployers.length === 0 ? (
+            <div className="bg-white/5 backdrop-blur-md rounded-xl shadow-md border border-white/10 p-12 text-center">
+              <Building className="h-16 w-16 mx-auto text-indigo-400 mb-6" />
+              <h2 className="text-2xl font-semibold mb-4 text-white">
+                No employers found
+              </h2>
+              <p className="text-gray-300 max-w-md mx-auto mb-8">
+                We couldn't find any employers matching your search criteria.
+                Try adjusting your filters or search terms.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setIndustryFilter(null);
+                  setProgramFilter(null);
+                }}
+                className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all"
+              >
+                Clear All Filters
+              </button>
+            </div>
+          ) : (
+            filteredEmployers.map((employer, index) => (
+              <motion.div
+                key={employer.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                className="bg-white/5 backdrop-blur-md rounded-xl shadow-md border border-white/10 overflow-hidden hover:bg-white/10 hover:border-indigo-500/40 transition-all"
+              >
+                <div className="p-6 md:p-8">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="flex-shrink-0">
+                      <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-white/20 bg-white/10">
+                        <Image
+                          src={employer.logo}
+                          alt={employer.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
+                        <div>
+                          <h2 className="text-2xl font-bold text-white">
+                            {employer.name}
+                          </h2>
+                          <Badge className="mt-1 md:mt-0 w-fit bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border-none">
+                            {employer.industry}
+                          </Badge>
+                        </div>
+
+                        <div className="flex gap-3 text-sm text-gray-300">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="h-4 w-4 text-indigo-400" />
+                            <span>{employer.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <Users className="h-4 w-4 text-purple-400" />
+                            <span>{employer.size}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="text-gray-300 mb-4">
+                        {employer.description}
+                      </p>
+
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center hover:bg-white/10 transition-all">
+                          <div className="text-2xl font-bold text-white">
+                            {employer.openPositions}
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Open Positions
+                          </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center hover:bg-white/10 transition-all">
+                          <div className="text-2xl font-bold text-white">
+                            {employer.hiredFromPlatform}
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Hired From Platform
+                          </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center hover:bg-white/10 transition-all">
+                          <div className="text-2xl font-bold text-white">
+                            {employer.sponsoredPrograms}
+                          </div>
+                          <div className="text-xs text-gray-400">
+                            Sponsored Programs
+                          </div>
+                        </div>
+
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-3 text-center hover:bg-white/10 transition-all">
+                          <div className="text-2xl font-bold text-white">
+                            {employer.founded}
+                          </div>
+                          <div className="text-xs text-gray-400">Founded</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-4 mb-4">
+                        <div>
+                          <h3 className="font-medium mb-2 text-white">
+                            Verified Skills
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            {employer.verifiedSkills.map(
+                              (skill: string, index: number) => (
+                                <Badge
+                                  key={index}
+                                  className="bg-white/5 text-gray-300 hover:bg-indigo-500/10 hover:text-indigo-300 border border-white/10 hover:border-indigo-500/30 transition-colors flex items-center gap-1"
+                                >
+                                  <BadgeCheck className="h-3 w-3 text-indigo-400" />
+                                  <span>{skill}</span>
+                                </Badge>
+                              )
+                            )}
+                          </div>
+                        </div>
+
+                        <div>
+                          <h3 className="font-medium mb-2 text-white">
+                            Program Types
+                          </h3>
+                          <div className="flex flex-wrap gap-2">
+                            {employer.programTypes.map(
+                              (program: string, index: number) => (
+                                <Badge
+                                  key={index}
+                                  className="bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border-none"
+                                >
+                                  {program}
+                                </Badge>
+                              )
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col sm:flex-row gap-3 justify-end">
+                        <Link href={`/careers?company=${employer.name}`}>
+                          <span className="inline-flex items-center px-4 py-2 rounded-lg bg-white/10 border border-white/20 text-white font-medium hover:bg-white/15 transition-all">
+                            <Briefcase className="mr-2 h-4 w-4 text-indigo-400" />
+                            View Jobs
+                          </span>
+                        </Link>
+
+                        <SparkleButton
+                          href={`/employers/${employer.id}`}
+                          className="px-6 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all flex"
+                        >
+                          Company Profile
+                          <ChevronRight className="ml-2 h-4 w-4" />
+                        </SparkleButton>
+                      </div>
+                    </div>
+                  </div>
+
+                  {employer.featuredProgram && (
+                    <div className="mt-6 pt-6 border-t border-white/10">
+                      <div className="bg-indigo-500/10 backdrop-blur-md border border-indigo-500/30 rounded-xl p-4">
+                        <h3 className="font-semibold text-lg mb-2 text-white flex items-center gap-2">
+                          <Award className="h-5 w-5 text-indigo-400" />
+                          Featured Program: {employer.featuredProgram.title}
+                        </h3>
+
+                        <p className="text-sm text-gray-300 mb-3">
+                          {employer.featuredProgram.description}
+                        </p>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                          <div>
+                            <h4 className="text-sm font-medium mb-2 text-white">
+                              Key Benefits
+                            </h4>
+                            <ul className="space-y-1">
+                              {employer.featuredProgram.benefits.map(
+                                (benefit: string, index: number) => (
+                                  <li
+                                    key={index}
+                                    className="text-sm flex items-center gap-2 text-gray-300"
+                                  >
+                                    <CheckCircle2 className="h-4 w-4 text-indigo-400" />
+                                    <span>{benefit}</span>
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </div>
+
+                          <div>
+                            <div className="space-y-2">
+                              <div className="flex items-center gap-2 text-gray-300">
+                                <Calendar className="h-4 w-4 text-indigo-400" />
+                                <span className="text-sm">
+                                  <span className="font-medium text-white">
+                                    Next Cohort:
+                                  </span>{" "}
+                                  {formatDate(
+                                    employer.featuredProgram.nextCohort
+                                  )}
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2 text-gray-300">
+                                <Calendar className="h-4 w-4 text-purple-400" />
+                                <span className="text-sm">
+                                  <span className="font-medium text-white">
+                                    Application Deadline:
+                                  </span>{" "}
+                                  {formatDate(
+                                    employer.featuredProgram.applicationDeadline
+                                  )}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <Link href={`/employers/${employer.id}/programs`}>
+                          <span className="inline-flex items-center bg-indigo-500/20 hover:bg-indigo-500/30 transition-colors px-4 py-2 rounded-lg text-white">
+                            Learn More About This Program
+                            <ArrowUpRight className="ml-2 h-4 w-4" />
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            ))
+          )}
+        </div>
+
+        <div className="mt-20 mb-8">
+          <h2 className="text-2xl md:text-3xl font-bold mb-10 text-center text-white">
+            How Employers <span className="gradient-text">Partner With Us</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div
-              key={employer.id}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-background border border-border rounded-xl shadow-sm overflow-hidden"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center hover:bg-white/10 hover:border-indigo-500/30 transition-all group"
             >
-              <div className="p-6 md:p-8">
-                <div className="flex flex-col md:flex-row gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
+              <div className="bg-indigo-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <BadgeCheck className="h-8 w-8 text-indigo-400" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-white">
+                Skill-Based Hiring
+              </h3>
+              <p className="text-gray-300">
+                Identify candidates based on verified skills and abilities
+                rather than just credentials. Find talent that has proven their
+                competencies through our assessment platform.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center hover:bg-white/10 hover:border-purple-500/30 transition-all group"
+            >
+              <div className="bg-purple-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <GraduationCap className="h-8 w-8 text-purple-400" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-white">
+                Education Sponsorship
+              </h3>
+              <p className="text-gray-300">
+                Invest in future talent by sponsoring students' education in
+                fields relevant to your company. Build a pipeline of perfectly
+                trained candidates.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 text-center hover:bg-white/10 hover:border-teal-500/30 transition-all group"
+            >
+              <div className="bg-teal-500/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                <Layers className="h-8 w-8 text-teal-400" />
+              </div>
+              <h3 className="text-xl font-semibold mb-3 text-white">
+                Talent Matching
+              </h3>
+              <p className="text-gray-300">
+                Our AI-powered platform matches your open positions with
+                candidates who have the exact skill profile you're looking for,
+                saving time and improving hiring outcomes.
+              </p>
+            </motion.div>
+          </div>
+        </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-20 bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-8 md:p-12"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div>
+              <h2 className="text-2xl font-bold mb-4 text-white">
+                Become a <span className="gradient-text">Partner Employer</span>
+              </h2>
+              <p className="text-gray-300 mb-6">
+                Join our network of forward-thinking companies investing in
+                education and skill-based hiring. Gain access to a pool of
+                talented individuals with verified skills and customized
+                training.
+              </p>
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 text-gray-300">
+                  <CheckCircle2 className="h-5 w-5 text-indigo-400" />
+                  <span>Access to verified skill profiles</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <CheckCircle2 className="h-5 w-5 text-indigo-400" />
+                  <span>Create customized training programs</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <CheckCircle2 className="h-5 w-5 text-purple-400" />
+                  <span>Improve diversity and inclusion in hiring</span>
+                </div>
+                <div className="flex items-center gap-2 text-gray-300">
+                  <CheckCircle2 className="h-5 w-5 text-purple-400" />
+                  <span>Reduce recruitment costs and time-to-hire</span>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <SparkleButton
+                  href="/employers/join"
+                  className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all"
+                >
+                  Join as an Employer
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </SparkleButton>
+              </div>
+            </div>
+
+            <div className="relative h-64 md:h-full rounded-xl overflow-hidden">
+              <Image
+                src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&auto=format&fit=crop"
+                alt="Employer partnership"
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black to-transparent opacity-70"></div>
+              <div className="absolute top-1/2 left-8 transform -translate-y-1/2">
+                <div className="bg-black/60 backdrop-blur-sm p-4 rounded-lg border border-white/10 shadow-lg">
+                  <div className="font-semibold text-lg text-white">
+                    Partner Success
+                  </div>
+                  <div className="text-sm text-gray-300">
+                    Average hiring success rate
+                  </div>
+                  <div className="text-3xl font-bold gradient-text mt-2">
+                    92%
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <div className="mt-20">
+          <h2 className="text-2xl md:text-3xl font-bold mb-10 text-center text-white">
+            What <span className="gradient-text">Employers Say</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {filteredEmployers.slice(0, 2).map((employer, index) =>
+              employer.successStories && employer.successStories.length > 0 ? (
+                <motion.div
+                  key={employer.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-indigo-500/30 transition-all"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="relative w-16 h-16 overflow-hidden rounded-lg flex-shrink-0 border border-white/20 bg-white/10">
                       <Image
                         src={employer.logo}
                         alt={employer.name}
@@ -466,437 +956,166 @@ export default function EmployersPage() {
                         className="object-cover"
                       />
                     </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
-                      <div>
-                        <h2 className="text-2xl font-bold">{employer.name}</h2>
-                        <Badge className="mt-1 md:mt-0 w-fit">
-                          {employer.industry}
-                        </Badge>
-                      </div>
-
-                      <div className="flex gap-3 text-sm">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="h-4 w-4 text-muted-foreground" />
-                          <span>{employer.location}</span>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4 text-muted-foreground" />
-                          <span>{employer.size}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="text-muted-foreground mb-4">
-                      {employer.description}
-                    </p>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {employer.openPositions}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Open Positions
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {employer.hiredFromPlatform}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Hired From Platform
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {employer.sponsoredPrograms}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Sponsored Programs
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {employer.founded}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Founded
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="space-y-4 mb-4">
-                      <div>
-                        <h3 className="font-medium mb-2">Verified Skills</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {employer.verifiedSkills.map(
-                            (skill: string, index: number) => (
-                              <Badge
-                                key={index}
-                                variant="outline"
-                                className="flex items-center gap-1"
-                              >
-                                <BadgeCheck className="h-3 w-3" />
-                                <span>{skill}</span>
-                              </Badge>
-                            )
-                          )}
-                        </div>
-                      </div>
-
-                      <div>
-                        <h3 className="font-medium mb-2">Program Types</h3>
-                        <div className="flex flex-wrap gap-2">
-                          {employer.programTypes.map(
-                            (program: string, index: number) => (
-                              <Badge key={index}>{program}</Badge>
-                            )
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-3 justify-end">
-                      <Link href={`/careers?company=${employer.name}`}>
-                        <Button variant="outline">
-                          <Briefcase className="mr-2 h-4 w-4" />
-                          View Jobs
-                        </Button>
-                      </Link>
-
-                      <Link href={`/employers/${employer.id}`}>
-                        <Button>
-                          Company Profile
-                          <ChevronRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
-                {employer.featuredProgram && (
-                  <div className="mt-6 pt-6 border-t">
-                    <div className="bg-primary-50 dark:bg-primary-950/20 rounded-xl p-4">
-                      <h3 className="font-semibold text-lg mb-2 flex items-center gap-2">
-                        <Award className="h-5 w-5 text-primary" />
-                        Featured Program: {employer.featuredProgram.title}
+                    <div>
+                      <h3 className="font-semibold text-lg text-white">
+                        {employer.name}
                       </h3>
-
-                      <p className="text-sm text-muted-foreground mb-3">
-                        {employer.featuredProgram.description}
+                      <p className="text-sm text-gray-300">
+                        {employer.industry}
                       </p>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div>
-                          <h4 className="text-sm font-medium mb-2">
-                            Key Benefits
-                          </h4>
-                          <ul className="space-y-1">
-                            {employer.featuredProgram.benefits.map(
-                              (benefit: string, index: number) => (
-                                <li
-                                  key={index}
-                                  className="text-sm flex items-center gap-2"
-                                >
-                                  <CheckCircle2 className="h-4 w-4 text-primary" />
-                                  <span>{benefit}</span>
-                                </li>
-                              )
-                            )}
-                          </ul>
-                        </div>
-
-                        <div>
-                          <div className="space-y-2">
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <span className="text-sm">
-                                <span className="font-medium">
-                                  Next Cohort:
-                                </span>{" "}
-                                {formatDate(
-                                  employer.featuredProgram.nextCohort
-                                )}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center gap-2">
-                              <Calendar className="h-4 w-4 text-muted-foreground" />
-                              <span className="text-sm">
-                                <span className="font-medium">
-                                  Application Deadline:
-                                </span>{" "}
-                                {formatDate(
-                                  employer.featuredProgram.applicationDeadline
-                                )}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <Link href={`/employers/${employer.id}/programs`}>
-                        <Button size="sm">
-                          Learn More About This Program
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
                     </div>
                   </div>
-                )}
-              </div>
-            </motion.div>
-          ))
-        )}
-      </div>
 
-      <div className="mt-16 mb-8">
-        <h2 className="text-2xl font-bold mb-8 text-center">
-          How Employers Partner With Us
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="bg-background border border-border rounded-xl p-6 text-center">
-            <div className="bg-primary-50 dark:bg-primary-950/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <BadgeCheck className="h-8 w-8 text-primary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Skill-Based Hiring</h3>
-            <p className="text-muted-foreground">
-              Identify candidates based on verified skills and abilities rather
-              than just credentials. Find talent that has proven their
-              competencies through our assessment platform.
-            </p>
-          </div>
-
-          <div className="bg-background border border-border rounded-xl p-6 text-center">
-            <div className="bg-secondary-50 dark:bg-secondary-950/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <GraduationCap className="h-8 w-8 text-secondary" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">
-              Education Sponsorship
-            </h3>
-            <p className="text-muted-foreground">
-              Invest in future talent by sponsoring students' education in
-              fields relevant to your company. Build a pipeline of perfectly
-              trained candidates.
-            </p>
-          </div>
-
-          <div className="bg-background border border-border rounded-xl p-6 text-center">
-            <div className="bg-accent-50 dark:bg-accent-950/20 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-              <Layers className="h-8 w-8 text-accent" />
-            </div>
-            <h3 className="text-xl font-semibold mb-3">Talent Matching</h3>
-            <p className="text-muted-foreground">
-              Our AI-powered platform matches your open positions with
-              candidates who have the exact skill profile you're looking for,
-              saving time and improving hiring outcomes.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-16 bg-background border border-border rounded-xl p-8 md:p-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div>
-            <h2 className="text-2xl font-bold mb-4">
-              Become a Partner Employer
-            </h2>
-            <p className="text-muted-foreground mb-6">
-              Join our network of forward-thinking companies investing in
-              education and skill-based hiring. Gain access to a pool of
-              talented individuals with verified skills and customized training.
-            </p>
-            <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <span>Access to verified skill profiles</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <span>Create customized training programs</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <span>Improve diversity and inclusion in hiring</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <span>Reduce recruitment costs and time-to-hire</span>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <Link href="/employers/join">
-                <Button size="lg">
-                  Join as an Employer
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative h-64 md:h-full">
-            <Image
-              src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?w=800&auto=format&fit=crop"
-              alt="Employer partnership"
-              fill
-              className="object-cover rounded-xl"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/80 to-transparent rounded-xl"></div>
-            <div className="absolute top-1/2 left-8 transform -translate-y-1/2">
-              <div className="bg-background/90 backdrop-blur-sm p-4 rounded-lg border border-border shadow-sm">
-                <div className="font-semibold text-lg">Partner Success</div>
-                <div className="text-sm text-muted-foreground">
-                  Average hiring success rate
-                </div>
-                <div className="text-3xl font-bold text-primary mt-2">92%</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold mb-8 text-center">
-          What Employers Say
-        </h2>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredEmployers.slice(0, 2).map((employer) =>
-            employer.successStories && employer.successStories.length > 0 ? (
-              <motion.div
-                key={employer.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
-                className="bg-background border border-border rounded-xl p-6"
-              >
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="relative w-16 h-16 overflow-hidden rounded-lg flex-shrink-0">
-                    <Image
-                      src={employer.logo}
-                      alt={employer.name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg">{employer.name}</h3>
-                    <p className="text-sm text-muted-foreground">
-                      {employer.industry}
+                  <div className="p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl mb-4">
+                    <p className="italic text-gray-300">
+                      "{employer.successStories[0].quote}"
                     </p>
                   </div>
-                </div>
 
-                <div className="p-4 bg-muted rounded-xl mb-4">
-                  <p className="italic text-muted-foreground">
-                    "{employer.successStories[0].quote}"
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="relative w-12 h-12 overflow-hidden rounded-full">
-                    <Image
-                      src={employer.successStories[0].avatar}
-                      alt={employer.successStories[0].name}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <div>
-                    <div className="font-medium">
-                      {employer.successStories[0].name}
+                  <div className="flex items-center gap-3">
+                    <div className="relative w-12 h-12 overflow-hidden rounded-full border-2 border-indigo-500/30">
+                      <Image
+                        src={employer.successStories[0].avatar}
+                        alt={employer.successStories[0].name}
+                        fill
+                        className="object-cover"
+                      />
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      {employer.successStories[0].role}
+                    <div>
+                      <div className="font-medium text-white">
+                        {employer.successStories[0].name}
+                      </div>
+                      <div className="text-sm text-gray-300">
+                        {employer.successStories[0].role}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ) : null
-          )}
+                </motion.div>
+              ) : null
+            )}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link href="/employer-stories">
+              <span className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors py-2 px-4 group">
+                View All Success Stories
+                <ArrowRight className="h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </div>
         </div>
 
-        <div className="mt-8 text-center">
-          <Link href="/employer-stories">
-            <Button variant="outline">
-              View All Success Stories
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
+        <div className="mt-20 mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold mb-10 text-center text-white">
+            Frequently Asked <span className="gradient-text">Questions</span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-indigo-500/30 transition-all"
+            >
+              <h3 className="text-lg font-semibold mb-3 text-white">
+                How do I verify skills?
+              </h3>
+              <p className="text-gray-300">
+                Our platform provides standardized assessments for various
+                skills. Candidates complete these assessments, and the results
+                are verified and recorded on their profiles, giving you
+                confidence in their abilities.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-indigo-500/30 transition-all"
+            >
+              <h3 className="text-lg font-semibold mb-3 text-white">
+                What is the cost to become a partner?
+              </h3>
+              <p className="text-gray-300">
+                We offer flexible partnership tiers based on your company's size
+                and hiring needs. Contact our employer partnerships team for a
+                customized quote and package details.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-indigo-500/30 transition-all"
+            >
+              <h3 className="text-lg font-semibold mb-3 text-white">
+                How does the sponsored education model work?
+              </h3>
+              <p className="text-gray-300">
+                You can sponsor students through their education in exchange for
+                a commitment to work with your company for a set period after
+                graduation, or through other flexible arrangements like
+                internships or project work.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-6 hover:bg-white/10 hover:border-indigo-500/30 transition-all"
+            >
+              <h3 className="text-lg font-semibold mb-3 text-white">
+                Can we customize the skills we're looking for?
+              </h3>
+              <p className="text-gray-300">
+                Absolutely. Partner employers can define specific skill profiles
+                for their openings, and our platform will match and recommend
+                candidates who meet those exact requirements.
+              </p>
+            </motion.div>
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link href="/employers/faq">
+              <span className="inline-flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors py-2 px-4 group">
+                View All FAQs
+                <ChevronRight className="ml-2 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="mt-16 mb-12">
-        <h2 className="text-2xl font-bold mb-8 text-center">
-          Frequently Asked Questions
-        </h2>
+      {/* Global styles to match Hero.tsx */}
+      <style jsx global>{`
+        @keyframes float {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-background border border-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-3">
-              How do I verify skills?
-            </h3>
-            <p className="text-muted-foreground">
-              Our platform provides standardized assessments for various skills.
-              Candidates complete these assessments, and the results are
-              verified and recorded on their profiles, giving you confidence in
-              their abilities.
-            </p>
-          </div>
-
-          <div className="bg-background border border-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-3">
-              What is the cost to become a partner?
-            </h3>
-            <p className="text-muted-foreground">
-              We offer flexible partnership tiers based on your company's size
-              and hiring needs. Contact our employer partnerships team for a
-              customized quote and package details.
-            </p>
-          </div>
-
-          <div className="bg-background border border-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-3">
-              How does the sponsored education model work?
-            </h3>
-            <p className="text-muted-foreground">
-              You can sponsor students through their education in exchange for a
-              commitment to work with your company for a set period after
-              graduation, or through other flexible arrangements like
-              internships or project work.
-            </p>
-          </div>
-
-          <div className="bg-background border border-border rounded-xl p-6">
-            <h3 className="text-lg font-semibold mb-3">
-              Can we customize the skills we're looking for?
-            </h3>
-            <p className="text-muted-foreground">
-              Absolutely. Partner employers can define specific skill profiles
-              for their openings, and our platform will match and recommend
-              candidates who meet those exact requirements.
-            </p>
-          </div>
-        </div>
-
-        <div className="mt-8 text-center">
-          <Link href="/employers/faq">
-            <Button variant="outline">
-              View All FAQs
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </div>
+        /* Gradient text styles */
+        .gradient-text {
+          background: linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+      `}</style>
     </div>
   );
 }

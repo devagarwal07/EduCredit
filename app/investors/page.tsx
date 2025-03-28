@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { gsap } from "gsap";
 import {
   Search,
   Filter,
@@ -20,12 +21,17 @@ import {
   Briefcase,
   BadgeCheck,
   BarChart,
+  ArrowUpRight,
+  Award,
 } from "lucide-react";
 import { CheckCircle2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { formatCurrency } from "@/lib/utils";
+import SparkleButton from "@/components/ui/SparkleButton";
+import BackgroundGradient from "@/components/effects/BackgroundGradient";
+import InvestorCard from "./components/InvestorCard";
+import SearchFilters from "./components/SearchFilters";
+import CallToAction from "./components/CallToAction";
 
 // Mock data fetch
 const fetchInvestors = async () => {
@@ -210,10 +216,15 @@ export default function InvestorsPage() {
     null
   );
 
+  // Current user info
+  const currentTime = "2025-03-28 06:57:23";
+  const currentUser = "vkhare2909";
+
+  const headlineRef = useRef<HTMLHeadingElement>(null);
+
   useEffect(() => {
     const loadData = async () => {
       const investorsData = await fetchInvestors();
-
       setInvestors(investorsData);
       setFilteredInvestors(investorsData);
       setLoading(false);
@@ -221,6 +232,32 @@ export default function InvestorsPage() {
 
     loadData();
   }, []);
+
+  // Animation effect for the heading
+  useEffect(() => {
+    if (!loading && headlineRef.current) {
+      // Animation timeline
+      const tl = gsap.timeline();
+
+      // Animate the headline
+      tl.fromTo(
+        headlineRef.current.querySelectorAll("span"),
+        {
+          opacity: 0,
+          y: 30,
+          rotationX: -40,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          stagger: 0.12,
+          duration: 1,
+          ease: "power3.out",
+        }
+      );
+    }
+  }, [loading]);
 
   useEffect(() => {
     // Filter investors based on search query and filters
@@ -270,340 +307,164 @@ export default function InvestorsPage() {
 
   if (loading) {
     return (
-      <div className="container py-12 flex items-center justify-center min-h-screen">
-        <div className="h-10 w-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      <div className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden">
+        {/* Background Elements */}
+        <div
+          className="absolute inset-0 -z-10 parallax-bg"
+          style={{ height: "150%" }}
+        >
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+              height: "150%",
+              width: "100%",
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col items-center">
+          <div className="h-12 w-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+          <p className="text-lg font-medium text-gray-200">
+            Loading investors data...
+          </p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container py-12">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-bold">Education Investors</h1>
-          <p className="text-muted-foreground mt-2">
-            Connect with investors who fund educational opportunities and career
-            growth
-          </p>
+    <div className="relative min-h-screen py-24 overflow-hidden">
+      <BackgroundGradient />
+
+      <div className="container mx-auto px-6">
+        <div className="mb-2">
+          <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-medium border border-white/20 inline-flex items-center">
+            <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+            {currentTime} • {currentUser}
+          </span>
         </div>
-        <Link href="/funding/apply">
-          <Button>
+
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+          <div>
+            <h1
+              ref={headlineRef}
+              className="text-4xl md:text-5xl font-bold mb-2"
+            >
+              <span className="gradient-text">Education</span>{" "}
+              <span className="text-white">Investors</span>
+            </h1>
+            <p className="text-gray-300 mt-2">
+              Connect with investors who fund educational opportunities and
+              career growth
+            </p>
+          </div>
+          <SparkleButton
+            href="/funding/apply"
+            className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all"
+          >
             Apply for Funding
             <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </Link>
-      </div>
-
-      {/* Search and filter section */}
-      <div className="bg-background border border-border rounded-xl shadow-sm p-6 mb-8">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-5 w-5" />
-            <Input
-              placeholder="Search by name, description, or focus area..."
-              className="pl-10"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
-
-          <div className="flex items-center gap-3">
-            <span className="text-sm whitespace-nowrap">Filter by:</span>
-            <select
-              value={focusFilter || ""}
-              onChange={(e) => setFocusFilter(e.target.value || null)}
-              className="px-3 py-2 border rounded-md text-sm bg-background"
-            >
-              <option value="">All Focus Areas</option>
-              {allFocusAreas.map((area) => (
-                <option key={area} value={area}>
-                  {area}
-                </option>
-              ))}
-            </select>
-
-            <select
-              value={fundingModelFilter || ""}
-              onChange={(e) => setFundingModelFilter(e.target.value || null)}
-              className="px-3 py-2 border rounded-md text-sm bg-background"
-            >
-              <option value="">All Funding Models</option>
-              {allFundingModels.map((model) => (
-                <option key={model} value={model}>
-                  {model}
-                </option>
-              ))}
-            </select>
-          </div>
+          </SparkleButton>
         </div>
 
-        {(searchQuery || focusFilter || fundingModelFilter) && (
-          <div className="flex items-center gap-2">
-            <div className="text-sm text-muted-foreground">
-              Showing {filteredInvestors.length} of {investors.length} investors
-            </div>
+        {/* Search and filter section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-md p-6 mb-8"
+        >
+          <SearchFilters
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            focusFilter={focusFilter}
+            setFocusFilter={setFocusFilter}
+            fundingModelFilter={fundingModelFilter}
+            setFundingModelFilter={setFundingModelFilter}
+            allFocusAreas={allFocusAreas}
+            allFundingModels={allFundingModels}
+            totalInvestors={investors.length}
+            filteredCount={filteredInvestors.length}
+          />
+        </motion.div>
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="text-sm text-muted-foreground"
-              onClick={() => {
-                setSearchQuery("");
-                setFocusFilter(null);
-                setFundingModelFilter(null);
-              }}
-            >
-              Clear Filters
-            </Button>
-          </div>
-        )}
-      </div>
-
-      {/* Investors list */}
-      <div className="space-y-8">
-        {filteredInvestors.length === 0 ? (
-          <div className="bg-muted rounded-xl p-12 text-center">
-            <Building className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-            <h2 className="text-xl font-semibold mb-2">No investors found</h2>
-            <p className="text-muted-foreground max-w-md mx-auto mb-6">
-              We couldn't find any investors matching your search criteria. Try
-              adjusting your filters or search terms.
-            </p>
-            <Button
-              onClick={() => {
-                setSearchQuery("");
-                setFocusFilter(null);
-                setFundingModelFilter(null);
-              }}
-            >
-              Clear All Filters
-            </Button>
-          </div>
-        ) : (
-          filteredInvestors.map((investor) => (
+        {/* Investors list */}
+        <div className="space-y-8">
+          {filteredInvestors.length === 0 ? (
             <motion.div
-              key={investor.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="bg-background border border-border rounded-xl shadow-sm overflow-hidden"
+              transition={{ duration: 0.5 }}
+              className="bg-white/5 border border-white/10 rounded-xl p-12 text-center"
             >
-              <div className="p-6 md:p-8">
-                <div className="flex flex-col md:flex-row md:items-center gap-6">
-                  <div className="flex-shrink-0">
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden border border-border">
-                      <Image
-                        src={investor.logo}
-                        alt={investor.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex-1">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-2 mb-3">
-                      <h2 className="text-2xl font-bold">{investor.name}</h2>
-                      <Badge className="md:ml-2 w-fit">{investor.type}</Badge>
-                    </div>
-
-                    <p className="text-muted-foreground mb-4">
-                      {investor.description}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {investor.focusAreas.map(
-                        (area: string, index: number) => (
-                          <Badge key={index} variant="outline">
-                            {area}
-                          </Badge>
-                        )
-                      )}
-                    </div>
-
-                    <div className="flex flex-wrap gap-y-2 gap-x-6 text-sm mb-6">
-                      <div className="flex items-center gap-1">
-                        <MapPin className="h-4 w-4 text-muted-foreground" />
-                        <span>{investor.location}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4 text-muted-foreground" />
-                        <span>Founded {investor.foundedYear}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Globe className="h-4 w-4 text-muted-foreground" />
-                        <a
-                          href={investor.website}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-primary hover:underline"
-                        >
-                          Visit Website
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          ${formatCurrency(investor.totalInvested / 1000000)}M
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Total Invested
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {investor.activeInvestments}
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Active Investments
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {investor.averageROI}%
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Average ROI
-                        </div>
-                      </div>
-
-                      <div className="bg-muted rounded-lg p-3 text-center">
-                        <div className="text-2xl font-bold">
-                          {investor.successRate}%
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Success Rate
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row gap-4">
-                      <div className="flex-1">
-                        <h3 className="font-medium mb-2">Funding Models</h3>
-                        <ul className="space-y-1">
-                          {investor.fundingModels.map(
-                            (model: string, index: number) => (
-                              <li
-                                key={index}
-                                className="flex items-center gap-2 text-sm"
-                              >
-                                <CheckCircle2 className="h-4 w-4 text-primary" />
-                                <span>{model}</span>
-                              </li>
-                            )
-                          )}
-                        </ul>
-                      </div>
-
-                      <div className="flex-1">
-                        <h3 className="font-medium mb-2">Investment Range</h3>
-                        <div className="flex items-baseline gap-1 text-xl">
-                          <DollarSign className="h-5 w-5 text-muted-foreground" />
-                          <span className="font-semibold">
-                            {formatCurrency(investor.investmentRange.min)}
-                          </span>
-                          <span className="text-muted-foreground">-</span>
-                          <span className="font-semibold">
-                            {formatCurrency(investor.investmentRange.max)}
-                          </span>
-                        </div>
-                      </div>
-
-                      <div className="self-end">
-                        <Link href={`/investors/${investor.id}`}>
-                          <Button>
-                            View Details
-                            <ChevronRight className="ml-2 h-4 w-4" />
-                          </Button>
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {investor.featuredTestimonial && (
-                  <div className="mt-6 pt-6 border-t">
-                    <div className="flex items-start gap-4">
-                      <div className="flex-shrink-0">
-                        <div className="relative w-12 h-12 rounded-full overflow-hidden">
-                          <Image
-                            src={investor.featuredTestimonial.avatar}
-                            alt={investor.featuredTestimonial.author}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      </div>
-
-                      <div className="flex-1">
-                        <div className="flex items-center mb-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              className="h-4 w-4 text-warning-500 fill-warning-500"
-                            />
-                          ))}
-                        </div>
-
-                        <p className="text-muted-foreground italic mb-2">
-                          "{investor.featuredTestimonial.quote}"
-                        </p>
-
-                        <div className="text-sm">
-                          <span className="font-medium">
-                            {investor.featuredTestimonial.author}
-                          </span>
-                          <span className="text-muted-foreground">
-                            {" "}
-                            • {investor.featuredTestimonial.role} at{" "}
-                            {investor.featuredTestimonial.company}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <Building className="h-16 w-16 mx-auto text-indigo-400 mb-6" />
+              <h2 className="text-2xl font-semibold mb-4 text-white">
+                No investors found
+              </h2>
+              <p className="text-gray-300 max-w-md mx-auto mb-8">
+                We couldn't find any investors matching your search criteria.
+                Try adjusting your filters or search terms.
+              </p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setFocusFilter(null);
+                  setFundingModelFilter(null);
+                }}
+                className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all"
+              >
+                Clear All Filters
+              </button>
             </motion.div>
-          ))
-        )}
+          ) : (
+            filteredInvestors.map((investor, index) => (
+              <InvestorCard
+                key={investor.id}
+                investor={investor}
+                delay={index * 0.1}
+              />
+            ))
+          )}
+        </div>
+
+        {/* Call to action */}
+        <CallToAction />
       </div>
 
-      {/* Call to action */}
-      <div className="mt-12 bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-white rounded-xl p-8 md:p-12 text-center">
-        <h2 className="text-3xl font-bold mb-4">
-          Ready to Fund Your Education?
-        </h2>
-        <p className="text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-          Connect with investors who believe in your potential and are ready to
-          back your educational journey.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/funding/apply">
-            <Button
-              size="lg"
-              className="bg-white text-primary-500 hover:bg-gray-100"
-            >
-              Apply for Funding
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-          <Link href="/funding/calculator">
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white/10"
-            >
-              Calculate Your Options
-              <BarChart className="ml-2 h-5 w-5" />
-            </Button>
-          </Link>
-        </div>
-      </div>
+      {/* Global styles */}
+      <style jsx global>{`
+        @keyframes float {
+          0% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+          100% {
+            transform: translateY(0px);
+          }
+        }
+
+        /* Gradient text styles */
+        .gradient-text {
+          background: linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          color: transparent;
+        }
+      `}</style>
     </div>
   );
 }
