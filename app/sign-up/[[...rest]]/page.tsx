@@ -49,30 +49,16 @@ export default function SignUpPage() {
           </div>
 
           <div
-            className={`relative bg-background/95 border border-border/40 rounded-2xl shadow-lg shadow-primary/5 dark:shadow-primary/10 overflow-hidden backdrop-blur-md ${
-              isLoaded ? "" : "min-h-[500px] flex items-center justify-center"
-            }`}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent dark:from-primary/10 pointer-events-none" />
 
-            {!isLoaded && (
+          >
+            {/* <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent dark:from-primary/10 pointer-events-none" /> */}
+
+            {/* {!isLoaded && (
               <div className="h-8 w-8 border-4 border-primary/80 dark:border-primary/70 border-t-transparent rounded-full animate-spin" />
-            )}
+            )} */}
 
             <SignUp
-              appearance={{
-                baseTheme: theme === "dark" ? dark : undefined,
-                elements: {
-                  rootBox: "w-full p-6",
-                  card: "bg-transparent shadow-none",
-                  formButtonPrimary:
-                    "bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 dark:from-primary dark:to-primary/90 dark:hover:from-primary/95 dark:hover:to-primary/85 text-primary-foreground transition-all duration-300",
-                  formFieldInput:
-                    "bg-background/50 border-border/50 focus:ring-2 focus:ring-primary/50 dark:bg-background/40 dark:border-border/40 dark:focus:ring-primary/40 rounded-lg",
-                  footerActionLink:
-                    "text-primary hover:text-primary/80 dark:text-primary/90 dark:hover:text-primary font-medium transition-colors",
-                },
-              }}
+
               signInUrl="/sign-in"
               redirectUrl="/dashboard"
               afterSignUpUrl="/onboarding"
