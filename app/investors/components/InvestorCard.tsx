@@ -153,7 +153,7 @@ export default function InvestorCard({
               </div>
 
               <div className="self-end">
-                <Link href={`/investors/${investor.id}`}>
+                <Link href={`/investor/${investor.id}`}>
                   <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-500/20 text-indigo-300 font-medium hover:bg-indigo-500/30 transition-colors group">
                     View Details
                     <ChevronRight className="h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />

@@ -65,10 +65,7 @@ export default function SignInPage() {
             )} */}
 
                         <SignIn forceRedirectUrl='/investor' />
-                        {/* // signUpUrl="/sign-up"
-                        // redirectUrl="/dashboard"
-                        // afterSignInUrl="/dashboard" */}
-
+                       
 
                     </div>
 

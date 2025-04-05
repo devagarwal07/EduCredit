@@ -59,7 +59,7 @@ const mainNavItems = [
 export function SiteHeader() {
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const pathname = usePathname();
+  const pathname = usePathname()!;
 
   useEffect(() => {
     setMobileNavOpen(false);
