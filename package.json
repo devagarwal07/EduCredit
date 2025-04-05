@@ -57,6 +57,7 @@
     "cmdk": "1.0.4",
     "d3": "^7.9.0",
     "date-fns": "4.1.0",
+    "dotenv": "^16.4.7",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "latest",
     "gsap": "latest",

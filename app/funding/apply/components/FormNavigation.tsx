@@ -46,20 +46,16 @@ export default function FormNavigation({
       >
         <SparkleButton
           href="#"
-          className={`px-6 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all ${
-            isSubmitting ? "opacity-70 pointer-events-none" : ""
-          }`}
+          className={`px-6 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all ${isSubmitting ? "opacity-70 pointer-events-none" : ""
+            }`}
         >
           {isSubmitting ? (
             <div className="flex items-center gap-2">
               <div className="h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>
-              Submitting...
+              null
             </div>
           ) : currentStep === totalSteps - 1 ? (
-            <>
-              Submit Application
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </>
+            null
           ) : (
             <>
               Next Step

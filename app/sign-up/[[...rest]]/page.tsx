@@ -11,7 +11,7 @@ export default function SignUpPage() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen px-4 py-10 gap-8 bg-neutral-950">
-            <h1 className="text-3xl font-bold text-center text-white">Sign in as</h1>
+            <h1 className="text-3xl font-bold text-center text-white">Sign Up as</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl">
                 <StudentCard onClick={() => router.push("/sign-in/student")} />
                 <InvestorCard onClick={() => router.push("/sign-in/investor")} />

@@ -64,7 +64,7 @@ export default function SignInPage() {
               <div className="h-8 w-8 border-4 border-primary/80 dark:border-primary/70 border-t-transparent rounded-full animate-spin" />
             )} */}
 
-                        <SignIn redirectUrl='/investor' />
+                        <SignIn forceRedirectUrl='/investor' />
                         {/* // signUpUrl="/sign-up"
                         // redirectUrl="/dashboard"
                         // afterSignInUrl="/dashboard" */}

@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { SignIn } from "@clerk/nextjs";
+import { AuthenticateWithRedirectCallback, SignIn } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
@@ -18,11 +18,11 @@ export default function SignInPage() {
     const [isLoaded, setIsLoaded] = useState(false);
     const { isSignedIn } = useUser();
 
-    useEffect(() => {
-        if (isSignedIn) {
-            router.push("/dashboard");
-        }
-    }, [isSignedIn, router]);
+    // useEffect(() => {
+    //     if (isSignedIn) {
+    //         router.push("/dashboard");
+    //     }
+    // }, [isSignedIn, router]);
 
     return (
         <div className="min-h-screen flex flex-col bg-gradient-to-br from-background to-background/80 dark:from-background dark:to-background/90">
@@ -63,10 +63,8 @@ export default function SignInPage() {
               <div className="h-8 w-8 border-4 border-primary/80 dark:border-primary/70 border-t-transparent rounded-full animate-spin" />
             )} */}
 
-                        <SignIn redirectUrl='/dashboard' />
-                        {/* // signUpUrl="/sign-up"
-                        // redirectUrl="/dashboard"
-                        // afterSignInUrl="/dashboard" */}
+                        <SignIn forceRedirectUrl='/dashboard' />
+                        {/* <AuthenticateWithRedirectCallback signInForceRedirectUrl='/dashboard' /> */}
 
 
                     </div>

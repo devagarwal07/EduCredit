@@ -23,10 +23,9 @@ export default function FormStepIndicator({
             <div key={index} className="flex items-center gap-3">
               <div
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm 
-                  ${
-                    currentStep === index
-                      ? "bg-indigo-500 text-white"
-                      : currentStep > index
+                  ${currentStep === index
+                    ? "bg-indigo-500 text-white"
+                    : currentStep > index
                       ? "bg-indigo-500/20 text-indigo-300"
                       : "bg-white/10 text-gray-400"
                   }
@@ -39,13 +38,12 @@ export default function FormStepIndicator({
                 )}
               </div>
               <span
-                className={`${
-                  currentStep === index
+                className={`${currentStep === index
                     ? "font-medium text-white"
                     : currentStep > index
-                    ? "text-indigo-300"
-                    : "text-gray-400"
-                }`}
+                      ? "text-indigo-300"
+                      : "text-gray-400"
+                  }`}
               >
                 {step}
               </span>
@@ -58,14 +56,14 @@ export default function FormStepIndicator({
             <LineChart className="h-4 w-4 text-indigo-400" />
             <span className="text-gray-400">Education Credit Score:</span>
             <span className="font-medium text-white">
-              {userData.educationCreditScore}
+              hello
             </span>
           </div>
           <div className="flex items-center gap-2 text-sm mt-2">
             <DollarSign className="h-4 w-4 text-indigo-400" />
             <span className="text-gray-400">Funding Eligibility:</span>
             <span className="font-medium text-white">
-              Up to ${formatCurrency(userData.educationCreditScore * 100)}
+              Up to ${formatCurrency(1 * 100)}
             </span>
           </div>
         </div>

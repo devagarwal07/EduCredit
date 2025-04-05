@@ -70,11 +70,10 @@ export default function EducationSkillsStep({
             value={formData.institution}
             onChange={(e) => onChange("institution", e.target.value)}
             placeholder="University, College, or School name"
-            className={`w-full px-3 py-2 bg-white/5 border ${
-              errors["education.institution"]
+            className={`w-full px-3 py-2 bg-white/5 border ${errors["education.institution"]
                 ? "border-red-500"
                 : "border-white/20"
-            } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+              } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
           />
           {errors["education.institution"] && (
             <p className="mt-1 text-sm text-red-500">
@@ -91,9 +90,8 @@ export default function EducationSkillsStep({
             value={formData.major}
             onChange={(e) => onChange("major", e.target.value)}
             placeholder="e.g., Computer Science, Data Science"
-            className={`w-full px-3 py-2 bg-white/5 border ${
-              errors["education.major"] ? "border-red-500" : "border-white/20"
-            } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+            className={`w-full px-3 py-2 bg-white/5 border ${errors["education.major"] ? "border-red-500" : "border-white/20"
+              } rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
           />
           {errors["education.major"] && (
             <p className="mt-1 text-sm text-red-500">
@@ -110,11 +108,10 @@ export default function EducationSkillsStep({
             type="date"
             value={formData.graduationDate}
             onChange={(e) => onChange("graduationDate", e.target.value)}
-            className={`w-full px-3 py-2 bg-white/5 border ${
-              errors["education.graduationDate"]
+            className={`w-full px-3 py-2 bg-white/5 border ${errors["education.graduationDate"]
                 ? "border-red-500"
                 : "border-white/20"
-            } rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+              } rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
           />
           {errors["education.graduationDate"] && (
             <p className="mt-1 text-sm text-red-500">
@@ -211,14 +208,14 @@ export default function EducationSkillsStep({
               assessments.
             </p>
             <div className="flex flex-wrap gap-2">
-              {userData.skills.map((skill: any) => (
+              {/* {userData.skills.map((skill: any) => (
                 <Badge
                   key={skill.id}
                   className="bg-indigo-500/20 text-indigo-300 hover:bg-indigo-500/30 border-none"
                 >
                   {skill.name} ({skill.level})
                 </Badge>
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
