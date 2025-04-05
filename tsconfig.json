@@ -28,7 +28,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "copy-textures.js",
-    "app/marketplace/[id]/page.tsx"
+    "app/marketplace/[id]/page.tsx",
+    "lib/mongoose.js"
   ],
   "exclude": ["node_modules"]
 }

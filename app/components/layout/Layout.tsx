@@ -5,6 +5,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import ScrollProgress from "../ui/ScrollProgress";
 import Cursor from "../effects/Cursor";
+import { ClerkProvider } from "@clerk/nextjs";
 
 type LayoutProps = {
   children: ReactNode;

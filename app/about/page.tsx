@@ -94,7 +94,7 @@ const AboutUs = () => {
   // Team members data with high-quality images
   const teamMembers = [
     {
-      name: "Vishal Khare",
+      name: "Vedant Khare",
       role: "Lead Developer",
       image:
         "https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop",
@@ -105,20 +105,9 @@ const AboutUs = () => {
         twitter: "https://twitter.com/vishalkhare",
       },
     },
+
     {
-      name: "Sophia Chen",
-      role: "UX Designer",
-      image:
-        "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop",
-      bio: "Sophia brings creative vision to our products with her background in user experience design and psychology. She ensures our applications are intuitive and accessible.",
-      social: {
-        linkedin: "https://linkedin.com/in/sophiachen",
-        github: "https://github.com/sophiachen",
-        twitter: "https://twitter.com/sophiachen",
-      },
-    },
-    {
-      name: "Marcus Rodriguez",
+      name: "Pulkit",
       role: "Product Manager",
       image:
         "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=1000&auto=format&fit=crop",
@@ -130,7 +119,7 @@ const AboutUs = () => {
       },
     },
     {
-      name: "Aisha Johnson",
+      name: "Dev Agarwal",
       role: "Backend Architect",
       image:
         "https://images.unsplash.com/photo-1543269664-7eef42226a21?q=80&w=1000&auto=format&fit=crop",
@@ -142,7 +131,7 @@ const AboutUs = () => {
       },
     },
     {
-      name: "David Park",
+      name: "Avik Ray",
       role: "Data Scientist",
       image:
         "https://images.unsplash.com/photo-1600486913747-55e5470d6f40?q=80&w=1000&auto=format&fit=crop",
