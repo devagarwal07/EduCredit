@@ -26,12 +26,11 @@ import { SkillGraph } from "@/components/visualizations/skill-graph";
 import { LearningPathTimeline } from "@/components/visualizations/learning-path-timeline";
 import { formatCurrency } from "@/lib/utils";
 
-// Temporary static data - will be replaced with API calls
 const fetchStudentData = async () => {
   try {
     const response = await fetch("/data/students.json");
     const students = await response.json();
-    return students[0]; // Just return the first student for now
+    return students[0];
   } catch (error) {
     console.error("Error fetching student data:", error);
     return null;
@@ -281,7 +280,7 @@ export default function Dashboard() {
                     const now = new Date();
                     const daysLeft = Math.ceil(
                       (dueDate.getTime() - now.getTime()) /
-                        (1000 * 60 * 60 * 24)
+                      (1000 * 60 * 60 * 24)
                     );
                     const isUrgent = daysLeft <= 7;
 
@@ -291,11 +290,10 @@ export default function Dashboard() {
                         className="timeline-item flex items-center gap-3 p-3 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
                       >
                         <div
-                          className={`p-2 rounded-full ${
-                            isUrgent
+                          className={`p-2 rounded-full ${isUrgent
                               ? "bg-amber-500/20 text-amber-400"
                               : "bg-indigo-500/20 text-indigo-400"
-                          }`}
+                            }`}
                         >
                           {isUrgent ? (
                             <AlertCircle className="h-5 w-5" />
