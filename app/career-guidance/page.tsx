@@ -111,7 +111,7 @@ const careerPathsData = [
         id: "project1",
         type: "project",
         title: "Exploratory Data Analysis Portfolio Project",
-        provider: "UpSkillr Projects",
+        provider: "EduCredit Projects",
         duration: "2 weeks",
         matchScore: 95,
       },
@@ -200,7 +200,7 @@ const skillGapsData = {
         title: "Complete Node.js Developer Course",
         provider: "Udemy",
         duration: "35 hours",
-        url: "https://upskillr.io/courses/nodejs-fundamentals",
+        url: "https://EduCredit.io/courses/nodejs-fundamentals",
       },
     },
     {
@@ -209,9 +209,9 @@ const skillGapsData = {
       description: "Learn SQL and NoSQL database concepts and implementation",
       resource: {
         title: "Database Design Mastery",
-        provider: "UpSkillr",
+        provider: "EduCredit",
         duration: "16 hours",
-        url: "https://upskillr.io/courses/database-design",
+        url: "https://EduCredit.io/courses/database-design",
       },
     },
     {
@@ -222,7 +222,7 @@ const skillGapsData = {
         title: "RESTful API Development",
         provider: "Coursera",
         duration: "12 hours",
-        url: "https://upskillr.io/courses/api-development",
+        url: "https://EduCredit.io/courses/api-development",
       },
     },
   ],
@@ -285,7 +285,7 @@ const CareerGuidancePage = () => {
   return (
     <Layout>
       <Head>
-        <title>Career Guidance | UpSkillr</title>
+        <title>Career Guidance | EduCredit</title>
         <meta
           name="description"
           content="Personalized career guidance and planning powered by AI"

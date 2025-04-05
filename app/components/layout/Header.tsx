@@ -25,7 +25,8 @@ export default function Header() {
     { name: "Home", href: "/" },
     { name: "Career Guidance", href: "/career-guidance" },
     { name: "Resume Builder", href: "/resume-builder" },
-    { name: "Credentials", href: "/credentials" },
+    { name: "Marketplace", href: "/marketplace" },
+    { name: "Community", href: "/community" },
     { name: "About", href: "/about" },
   ];
 
@@ -72,9 +73,6 @@ export default function Header() {
     },
   };
 
-  const currentDate = "2025-03-03";
-  const currentUser = "vkhare2909";
-
   return (
     <>
       <motion.header
@@ -103,7 +101,7 @@ export default function Header() {
                 backgroundClip: "text",
               }}
             >
-              UpSkillr
+              EduCredit
             </span>
           </Link>
 
@@ -140,11 +138,6 @@ export default function Header() {
 
           <div className="flex items-center space-x-4">
             {/* User info display */}
-            <div className="hidden md:flex items-center text-xs text-gray-400">
-              <span>{currentDate}</span>
-              <span className="mx-2">|</span>
-              <span className="text-indigo-400">{currentUser}</span>
-            </div>
 
             <Link
               href="/login"
@@ -210,15 +203,7 @@ export default function Header() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: 0.3 }}
                   className="py-2 text-sm text-gray-400"
-                >
-                  <div className="flex flex-col space-y-1">
-                    <span>Date: {currentDate}</span>
-                    <span>
-                      User:{" "}
-                      <span className="text-indigo-400">{currentUser}</span>
-                    </span>
-                  </div>
-                </motion.li>
+                ></motion.li>
 
                 <div className="pt-6 space-y-4">
                   <Link

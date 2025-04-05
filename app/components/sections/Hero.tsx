@@ -3,11 +3,10 @@ import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import gsap from "gsap";
-import { SplitText } from "../../utils/SplitText";
 
 import GlobeVisualization from "../3d/GlobeVisualization";
 import SparkleButton from "../ui/SparkleButton";
-import { FaAws, FaGoogle, FaMicrosoft } from "react-icons/fa";
+import { GraduationCap, TrendingUp, Shield, Users, Zap } from "lucide-react";
 
 export default function Hero() {
   const heroRef = useRef<HTMLDivElement>(null);
@@ -15,7 +14,7 @@ export default function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const gradientTextRef = useRef<HTMLSpanElement>(null);
 
-  const currentTime = "2025-03-04 08:24:51";
+  const currentTime = "2025-04-04 20:11:30";
   const currentUser = "vkhare2909";
 
   useEffect(() => {
@@ -28,7 +27,7 @@ export default function Hero() {
           // Wait for fonts to load
           await new Promise((resolve) => setTimeout(resolve, 100));
 
-          // Animate the headline without SplitText
+          // Animate the headline
           tl.fromTo(
             headlineRef.current.querySelectorAll("span"),
             {
@@ -96,7 +95,7 @@ export default function Hero() {
       ref={heroRef}
       className="relative min-h-screen flex items-center justify-center py-24 overflow-hidden"
     >
-      {/* Background Elements - Expanded to cover all content */}
+      {/* Background Elements */}
       <div
         className="absolute inset-0 -z-10 parallax-bg"
         style={{ height: "150%" }}
@@ -105,7 +104,7 @@ export default function Hero() {
           className="absolute inset-0 opacity-30"
           style={{
             background:
-              "radial-gradient(circle at 50% 40%, rgba(99, 102, 241, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(45, 212, 191, 0.05) 50%, transparent 80%)",
+              "radial-gradient(circle at 50% 40%, rgba(59, 130, 246, 0.2) 0%, rgba(79, 70, 229, 0.1) 25%, rgba(147, 51, 234, 0.05) 50%, transparent 80%)",
             height: "150%",
             width: "100%",
           }}
@@ -114,7 +113,7 @@ export default function Hero() {
           className="absolute inset-0"
           style={{
             background:
-              "radial-gradient(circle at 50% 40%, rgba(14,165,233,0.15) 0, rgba(0,0,0,0) 80%)",
+              "radial-gradient(circle at 50% 40%, rgba(14, 165, 233, 0.15) 0, rgba(0, 0, 0, 0) 80%)",
             height: "150%",
             width: "100%",
           }}
@@ -134,9 +133,9 @@ export default function Hero() {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="mb-6"
           >
-            <span className="px-4 py-2 rounded-full bg-white/10 text-sm font-medium border border-white/20 inline-flex items-center">
-              <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-              AI-Powered Career Navigation Platform
+            <span className="px-4 py-2 rounded-full bg-blue-500/10 text-sm font-medium border border-blue-400/20 inline-flex items-center">
+              <span className="w-2 h-2 bg-blue-400 rounded-full mr-2 animate-pulse"></span>
+              AI-Powered Education Financing Platform
             </span>
           </motion.div>
 
@@ -147,14 +146,14 @@ export default function Hero() {
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight headline-text"
             >
               <span ref={gradientTextRef} className="gradient-text block mb-2">
-                Level Up Your Career
+                Fund Your Future
               </span>
               <span className="with-text inline-block mr-2">With</span>
               <span className="ai-text relative inline-block">
-                AI & Blockchain
+                Skills-Based Financing
                 <svg
                   className="absolute -bottom-2 left-0 w-full"
-                  viewBox="0 0 200 8"
+                  viewBox="0 0 280 8"
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                 >
@@ -172,9 +171,9 @@ export default function Hero() {
                       x2="100%"
                       y2="0%"
                     >
-                      <stop offset="0%" stopColor="#38bdf8" />
-                      <stop offset="50%" stopColor="#d946ef" />
-                      <stop offset="100%" stopColor="#2dd4bf" />
+                      <stop offset="0%" stopColor="#3b82f6" />
+                      <stop offset="50%" stopColor="#8b5cf6" />
+                      <stop offset="100%" stopColor="#6366f1" />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -186,54 +185,50 @@ export default function Hero() {
             ref={subtitleRef}
             className="text-lg md:text-xl text-gray-300 mb-10 max-w-md"
           >
-            Navigate your career journey with AI-powered guidance and secure
-            your achievements with blockchain-verified credentials.
+            EduCredit Pro combines AI-powered career planning, skills
+            verification, and innovative financing to make education accessible
+            for everyone.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
             <SparkleButton
               href="/signup"
-              className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300"
+              className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white font-medium shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-105 transition-all duration-300"
             >
-              Start Your Journey
+              Apply for Funding
             </SparkleButton>
 
             <Link
-              href="#how-it-works"
+              href="/verify"
               className="px-6 py-3 rounded-lg bg-white/10 border border-white/20 text-white font-medium hover:bg-white/15 transition-all duration-300 flex items-center justify-center group"
             >
-              How It Works
-              <svg
-                className="ml-2 w-5 h-5 transform transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
+              Verify Credentials
+              <Shield className="ml-2 w-4 h-4 transform transition-transform duration-300 group-hover:scale-110" />
             </Link>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.6 }}
-            className="mt-12 flex items-center space-x-6"
-          >
-            <p className="text-sm text-gray-400">
-              Trusted by industry leaders:
-            </p>
-            <div className="flex space-x-6 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
-              <FaGoogle className="text-xl md:text-2xl" />
-              <FaMicrosoft className="text-xl md:text-2xl" />
-              <FaAws className="text-xl md:text-2xl" />
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Feature highlights */}
+            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 flex flex-col items-center text-center hover:bg-gray-700/30 transition-colors duration-300">
+              <Shield className="text-blue-400 mb-2" size={24} />
+              <h3 className="text-sm font-medium">Blockchain Verification</h3>
             </div>
-          </motion.div>
+
+            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 flex flex-col items-center text-center hover:bg-gray-700/30 transition-colors duration-300">
+              <TrendingUp className="text-purple-400 mb-2" size={24} />
+              <h3 className="text-sm font-medium">Career Simulation</h3>
+            </div>
+
+            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 flex flex-col items-center text-center hover:bg-gray-700/30 transition-colors duration-300">
+              <Users className="text-green-400 mb-2" size={24} />
+              <h3 className="text-sm font-medium">Expert Mentorship</h3>
+            </div>
+
+            <div className="bg-gray-800/30 backdrop-blur-sm border border-gray-700/50 rounded-xl p-4 flex flex-col items-center text-center hover:bg-gray-700/30 transition-colors duration-300">
+              <Zap className="text-amber-400 mb-2" size={24} />
+              <h3 className="text-sm font-medium">AI Assessments</h3>
+            </div>
+          </div>
         </motion.div>
 
         <motion.div
@@ -242,10 +237,41 @@ export default function Hero() {
           transition={{ duration: 1.2 }}
           className="relative h-[600px] w-full z-0"
         >
-          {/* Globe container with increased height */}
+          {/* Globe container */}
           <div className="absolute inset-0">
             <GlobeVisualization />
           </div>
+
+          {/* Floating stats cards */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.5 }}
+            className="absolute top-[20%] left-[20%] bg-gray-800/80 backdrop-blur-md border border-gray-700/50 p-3 rounded-lg shadow-xl"
+          >
+            <div className="flex items-center gap-2">
+              <GraduationCap className="text-blue-400" size={16} />
+              <div>
+                <div className="text-xs font-medium">Students Funded</div>
+                <div className="text-sm font-bold">25,000+</div>
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.0, duration: 0.5 }}
+            className="absolute bottom-[30%] right-[15%] bg-gray-800/80 backdrop-blur-md border border-gray-700/50 p-3 rounded-lg shadow-xl"
+          >
+            <div className="flex items-center gap-2">
+              <Shield className="text-purple-400" size={16} />
+              <div>
+                <div className="text-xs font-medium">Verified Credentials</div>
+                <div className="text-sm font-bold">100,000+</div>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
 
@@ -284,7 +310,7 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Move inline styles to CSS classes */}
+      {/* Styling */}
       <style jsx global>{`
         @keyframes float {
           0% {
@@ -300,7 +326,7 @@ export default function Hero() {
 
         /* Gradient text styles */
         .gradient-text {
-          background: linear-gradient(to right, #38bdf8, #d946ef, #2dd4bf);
+          background: linear-gradient(to right, #3b82f6, #8b5cf6, #6366f1);
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;

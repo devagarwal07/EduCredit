@@ -10,8 +10,6 @@ export default function HowItWorks() {
   const timelineRef = useRef<HTMLDivElement>(null);
 
   // User data
-  const currentDateTime = "2025-03-03 19:06:04";
-  const currentUser = "vkhare2909";
 
   useEffect(() => {
     if (!timelineRef.current) return;
@@ -55,52 +53,52 @@ export default function HowItWorks() {
 
   const steps = [
     {
-      title: "User Onboards",
+      title: "Apply for Funding",
       description:
-        "Upload your resume and fill out career preferences to get started on your personalized journey.",
+        "Submit your educational goals, current skills, and career aspirations to apply for skills-based financing tailored to your needs.",
       image:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
-      gradient: "from-indigo-500 to-indigo-600",
+        "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80",
+      gradient: "from-blue-500 to-blue-600",
     },
     {
-      title: "AI Analysis",
+      title: "AI Skills Assessment",
       description:
-        "Our AI analyzes your profile to identify skill gaps and recommend suitable jobs & learning paths.",
+        "Our advanced OpenCV-powered interview system and assessment tools evaluate your current abilities and career potential.",
       image:
-        "https://images.unsplash.com/photo-1586282391129-76a6df230234?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1581092921461-7384161d8ac1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
       gradient: "from-purple-500 to-purple-600",
     },
     {
-      title: "Resume Optimization",
+      title: "Investor Matching",
       description:
-        "The AI Resume Builder creates optimized resumes tailored for specific jobs to boost your visibility.",
+        "Connect with investors who believe in your potential and are willing to fund your education in exchange for future income sharing.",
       image:
-        "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
-      gradient: "from-pink-500 to-pink-600",
+        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80",
+      gradient: "from-indigo-500 to-indigo-600",
     },
     {
-      title: "Career Visualization",
+      title: "Career Path Simulation",
       description:
-        "Track your progress with an interactive 3D career roadmap that visualizes your journey.",
+        "Visualize your future career trajectory with our interactive simulator showing salary projections, time-to-goal, and job opportunities.",
       image:
-        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-      gradient: "from-indigo-600 to-purple-600",
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      gradient: "from-blue-600 to-purple-600",
     },
     {
-      title: "Blockchain Credentials",
+      title: "Blockchain Verification",
       description:
-        "Earn certifications and skill badges minted as NFTs for secure, verifiable proof of your achievements.",
+        "Earn verifiable credentials secured on the blockchain that prove your skills and accomplishments to employers and investors.",
       image:
-        "https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1467&q=80",
-      gradient: "from-purple-600 to-pink-600",
+        "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1467&q=80",
+      gradient: "from-purple-600 to-blue-600",
     },
     {
-      title: "Job & Course Matching",
+      title: "Mentorship Connection",
       description:
-        "Receive continuous AI suggestions for best-fit jobs and courses to advance your career.",
+        "Get matched with industry experts through our AI-powered mentorship system to accelerate your learning and career development.",
       image:
-        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-      gradient: "from-pink-500 to-indigo-500",
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      gradient: "from-blue-500 to-indigo-600",
     },
   ];
 
@@ -121,7 +119,7 @@ export default function HowItWorks() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-sm font-medium text-indigo-400 uppercase tracking-wider"
+            className="text-sm font-medium text-blue-400 uppercase tracking-wider"
           >
             The Process
           </motion.span>
@@ -133,7 +131,7 @@ export default function HowItWorks() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-3xl md:text-4xl font-bold mt-2 mb-4"
           >
-            How UpSkillr Works
+            How EduCredit Pro Works
           </motion.h2>
 
           <motion.p
@@ -143,8 +141,9 @@ export default function HowItWorks() {
             transition={{ duration: 0.7, delay: 0.4 }}
             className="text-gray-400 max-w-2xl mx-auto"
           >
-            Follow these six steps to transform your career journey and unlock
-            new opportunities with our AI-powered platform.
+            Follow these six steps to secure your education funding, develop
+            valuable skills, and launch your career with our blockchain-powered
+            platform.
           </motion.p>
         </div>
 
@@ -155,7 +154,7 @@ export default function HowItWorks() {
               className="timeline-progress absolute top-0 left-0 right-0 h-0"
               style={{
                 background:
-                  "linear-gradient(to bottom, rgb(79, 70, 229), rgb(147, 51, 234), rgb(236, 72, 153))",
+                  "linear-gradient(to bottom, rgb(59, 130, 246), rgb(139, 92, 246), rgb(99, 102, 241))",
               }}
             ></div>
           </div>
@@ -180,14 +179,6 @@ export default function HowItWorks() {
                   <p className="text-gray-400">{step.description}</p>
 
                   {/* Add user tag to first step */}
-                  {index === 0 && (
-                    <div className="inline-flex items-center mt-3 text-xs text-gray-500">
-                      <span>Created by</span>
-                      <span className="ml-1 text-indigo-400">
-                        {currentUser}
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 <div className="absolute left-1/2 transform -translate-x-1/2 z-10">
@@ -208,15 +199,10 @@ export default function HowItWorks() {
                       src={step.image}
                       alt={step.title}
                       fill
-                      className="object-contain p-4"
+                      className="object-cover p-4"
                     />
 
                     {/* Last updated timestamp */}
-                    {index === steps.length - 1 && (
-                      <div className="absolute bottom-2 right-2 bg-black/40 backdrop-blur-sm text-[10px] text-gray-400 px-2 py-1 rounded">
-                        Last updated: {currentDateTime}
-                      </div>
-                    )}
                   </div>
                 </div>
               </div>

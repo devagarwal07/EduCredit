@@ -11,50 +11,48 @@ import {
 } from "react-icons/fa";
 
 // Current user data
-const currentDateTime = "2025-03-03 19:11:36";
-const currentUser = "vkhare2909";
 
 // Testimonial data
 const testimonials = [
   {
     id: 1,
-    name: "Alex Morgan",
-    role: "Software Developer",
-    company: "TechVision",
+    name: "Michael Torres",
+    role: "Software Engineer",
+    company: "CloudMatrix Inc.",
     image:
-      "https://images.unsplash.com/photo-1595152772835-219674b2a8a6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     quote:
-      "UpSkillr transformed my career trajectory. The AI career guidance helped me identify key skills I was missing, and the blockchain credentials gave me an edge in job applications.",
+      "EduCredit Pro revolutionized my education journey. Their Income Share Agreement meant zero upfront costs for my coding bootcamp, and the AI-powered career simulator helped me map a clear path to becoming a senior engineer.",
   },
   {
     id: 2,
     name: "Sophia Chen",
-    role: "UX Designer",
-    company: "Creative Labs",
+    role: "Data Scientist",
+    company: "Analytix",
     image:
-      "https://images.unsplash.com/photo-1552058544-f2b08422138a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     quote:
-      "The resume optimization tool landed me interviews at top companies. The 3D career visualization made planning my career path exciting rather than overwhelming.",
+      "The blockchain verification system gave my credentials instant credibility with employers. Combined with the AI video interview practice, I was fully prepared to land my dream job after completing my data science program.",
   },
   {
     id: 3,
-    name: "Marcus Johnson",
-    role: "Data Scientist",
-    company: "DataCore Analytics",
+    name: "James Wilson",
+    role: "UX Designer",
+    company: "DesignForward",
     image:
-      "https://images.unsplash.com/photo-1581091870627-3a45013e5495?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     quote:
-      "As someone transitioning careers, UpSkillr was invaluable. The skill gap analysis pinpointed exactly what I needed to learn, and the blockchain credentials validated my new skills to employers.",
+      "As a career-changer, EduCredit Pro's investor matching was perfect. I secured funding based on my potential, not my credit score. The platform's mentor matching connected me with a senior designer who guided my transition into tech.",
   },
   {
     id: 4,
     name: "Elena Rodriguez",
-    role: "Product Manager",
-    company: "Innovate Inc.",
+    role: "Full Stack Developer",
+    company: "TechNova Solutions",
     image:
-      "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     quote:
-      "The personalized learning paths and job matching features saved me countless hours. I secured a role that perfectly aligned with my skills and career goals.",
+      "EduCredit Pro removed the financial barrier to my education. Their skills assessment accurately identified my strengths, and the career path simulator mapped my journey from bootcamp graduate to full stack developer. Now I'm earning triple my previous salary!",
   },
 ];
 
@@ -139,34 +137,21 @@ export default function Testimonials() {
       <div className="container mx-auto px-6">
         <div className="text-center mb-16">
           {/* User badge */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="inline-flex items-center space-x-2 bg-gray-800/70 backdrop-blur-sm rounded-full px-4 py-1.5 mb-4 border border-gray-700/50"
-          >
-            <FaUserClock className="text-indigo-400" size={14} />
-            <div className="text-xs">
-              <span className="text-indigo-400 font-medium">{currentUser}</span>
-              <span className="mx-2 text-gray-500">•</span>
-              <span className="text-gray-400">{currentDateTime}</span>
-            </div>
-          </motion.div>
 
-          <span className="text-sm font-medium text-indigo-400 uppercase tracking-wider">
+          <span className="text-sm font-medium text-blue-400 uppercase tracking-wider">
             Success Stories
           </span>
 
           <h2 className="text-3xl md:text-4xl font-bold mt-2 mb-4">
-            Hear From Our Users
+            Transforming Education Funding
           </h2>
 
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Discover how UpSkillr has helped professionals across various
-            industries accelerate their career growth.
+            Discover how EduCredit Pro has helped students secure funding,
+            advance their careers, and achieve financial success through
+            skills-based financing.
           </p>
         </div>
-
         <div className="max-w-4xl mx-auto relative">
           <div
             className="bg-gray-900/50 backdrop-blur-md border border-white/10 rounded-2xl p-8 relative overflow-hidden"
@@ -177,7 +162,7 @@ export default function Testimonials() {
               className="absolute top-0 left-0 right-0 h-1"
               style={{
                 background:
-                  "linear-gradient(to right, #4f46e5, #7e22ce, #ec4899)",
+                  "linear-gradient(to right, #3b82f6, #8b5cf6, #6366f1)",
               }}
             ></div>
 
@@ -185,10 +170,6 @@ export default function Testimonials() {
             <FaQuoteLeft className="absolute top-8 left-8 text-4xl text-gray-700 opacity-30" />
 
             {/* Last viewed by indicator */}
-            <div className="absolute top-6 right-6 flex items-center space-x-2 text-xs">
-              <span className="text-gray-500">Last viewed by</span>
-              <span className="text-indigo-400 font-medium">{currentUser}</span>
-            </div>
 
             {/* Testimonial carousel */}
             <AnimatePresence initial={false} custom={direction} mode="wait">
@@ -205,7 +186,7 @@ export default function Testimonials() {
                   <div className="flex-shrink-0">
                     <div
                       className="relative w-28 h-28 md:w-32 md:h-32 rounded-full overflow-hidden border-2"
-                      style={{ borderColor: "rgba(79, 70, 229, 0.3)" }}
+                      style={{ borderColor: "rgba(59, 130, 246, 0.3)" }}
                     >
                       <Image
                         src={testimonials[currentIndex].image}
@@ -234,12 +215,7 @@ export default function Testimonials() {
 
                       <div className="hidden md:block text-right text-xs text-gray-500">
                         <div>
-                          Testimonial ID: #{testimonials[currentIndex].id}
-                        </div>
-                        <div>
-                          Added: {new Date(currentDateTime).getMonth() + 1}/
-                          {new Date(currentDateTime).getDate()}/
-                          {new Date(currentDateTime).getFullYear()}
+                          Success Story #{testimonials[currentIndex].id}
                         </div>
                       </div>
                     </div>
@@ -252,14 +228,14 @@ export default function Testimonials() {
             <div className="absolute bottom-8 right-8 flex items-center space-x-3">
               <button
                 onClick={() => paginate(-1)}
-                className="w-10 h-10 rounded-full bg-gray-900/50 border border-gray-700 flex items-center justify-center text-white hover:bg-indigo-500 hover:border-indigo-500 transition-colors"
+                className="w-10 h-10 rounded-full bg-gray-900/50 border border-gray-700 flex items-center justify-center text-white hover:bg-blue-500 hover:border-blue-500 transition-colors"
                 aria-label="Previous testimonial"
               >
                 <FaChevronLeft />
               </button>
               <button
                 onClick={() => paginate(1)}
-                className="w-10 h-10 rounded-full bg-gray-900/50 border border-gray-700 flex items-center justify-center text-white hover:bg-indigo-500 hover:border-indigo-500 transition-colors"
+                className="w-10 h-10 rounded-full bg-gray-900/50 border border-gray-700 flex items-center justify-center text-white hover:bg-blue-500 hover:border-blue-500 transition-colors"
                 aria-label="Next testimonial"
               >
                 <FaChevronRight />
@@ -278,7 +254,7 @@ export default function Testimonials() {
                 }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   currentIndex === index
-                    ? "w-8 bg-indigo-500"
+                    ? "w-8 bg-blue-500"
                     : "bg-gray-700 hover:bg-gray-600"
                 }`}
                 aria-label={`Go to testimonial ${index + 1}`}
@@ -286,7 +262,6 @@ export default function Testimonials() {
             ))}
           </div>
         </div>
-
         {/* Stats section */}
         <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8">
           <motion.div
@@ -300,15 +275,15 @@ export default function Testimonials() {
               className="text-4xl font-bold mb-2"
               style={{
                 background:
-                  "linear-gradient(to right, #4f46e5, #7e22ce, #ec4899)",
+                  "linear-gradient(to right, #3b82f6, #8b5cf6, #6366f1)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
             >
-              10,000+
+              25,000+
             </div>
-            <p className="text-gray-400">Active Users</p>
+            <p className="text-gray-400">Students Funded</p>
           </motion.div>
 
           <motion.div
@@ -322,18 +297,15 @@ export default function Testimonials() {
               className="text-4xl font-bold mb-2"
               style={{
                 background:
-                  "linear-gradient(to right, #4f46e5, #7e22ce, #ec4899)",
+                  "linear-gradient(to right, #3b82f6, #8b5cf6, #6366f1)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
             >
-              94%
+              145%
             </div>
-            <p className="text-gray-400">Career Advancement Rate</p>
-            <div className="mt-2 text-xs text-gray-500">
-              Last updated: {currentDateTime}
-            </div>
+            <p className="text-gray-400">Average Salary Increase</p>
           </motion.div>
 
           <motion.div
@@ -347,32 +319,17 @@ export default function Testimonials() {
               className="text-4xl font-bold mb-2"
               style={{
                 background:
-                  "linear-gradient(to right, #4f46e5, #7e22ce, #ec4899)",
+                  "linear-gradient(to right, #3b82f6, #8b5cf6, #6366f1)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
               }}
             >
-              50,000+
+              100,000+
             </div>
-            <p className="text-gray-400">Blockchain Credentials Issued</p>
+            <p className="text-gray-400">Blockchain Credentials Verified</p>
           </motion.div>
         </div>
-
-        {/* Admin note */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="mt-12 text-center"
-        >
-          <div className="inline-flex items-center space-x-2 bg-gray-800/30 text-gray-500 text-xs rounded-full px-3 py-1">
-            <span>Dashboard Session: {currentUser}</span>
-            <span>•</span>
-            <span>Last Activity: {currentDateTime}</span>
-          </div>
-        </motion.div>
       </div>
     </section>
   );

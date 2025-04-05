@@ -4,11 +4,11 @@ import { motion, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import {
-  FaBrain,
-  FaFileAlt,
+  FaLaptopCode,
+  FaChartLine,
   FaShieldAlt,
-  FaCube,
-  FaGamepad,
+  FaUsers,
+  FaGraduationCap,
 } from "react-icons/fa";
 import Image from "next/image";
 
@@ -59,14 +59,14 @@ function FeatureCard({
       <div
         className="relative mb-6 w-14 h-14 flex items-center justify-center rounded-lg overflow-hidden"
         style={{
-          background: "linear-gradient(to bottom right, #4f46e5, #7e22ce)",
+          background: "linear-gradient(to bottom right, #3b82f6, #8b5cf6)",
         }}
       >
         <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-500" />
         <div className="z-10 text-2xl text-white">{icon}</div>
       </div>
 
-      <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-indigo-400">
+      <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-blue-400">
         {title}
       </h3>
 
@@ -76,13 +76,13 @@ function FeatureCard({
 
       {currentUser && currentTime && (
         <div className="mt-4 mb-2 flex items-center text-xs text-gray-500">
-          <span className="text-indigo-400">{currentUser}</span>
+          <span className="text-blue-400">{currentUser}</span>
           <span className="mx-2">•</span>
           <span>{currentTime}</span>
         </div>
       )}
 
-      <div className="mt-auto pt-6 flex items-center text-indigo-400 font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+      <div className="mt-auto pt-6 flex items-center text-blue-400 font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
         <span>Learn more</span>
         <svg
           className="ml-2 w-5 h-5"
@@ -133,13 +133,13 @@ function ImageCard({ imageUrl, title, description, delay }: ImageCardProps) {
         />
       </div>
       <div className="p-8 flex flex-col flex-grow">
-        <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-indigo-400">
+        <h3 className="text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-blue-400">
           {title}
         </h3>
         <p className="text-gray-400 group-hover:text-gray-300 transition-colors duration-300">
           {description}
         </p>
-        <div className="mt-auto pt-6 flex items-center text-indigo-400 font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+        <div className="mt-auto pt-6 flex items-center text-blue-400 font-medium opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
           <span>Explore</span>
           <svg
             className="ml-2 w-5 h-5"
@@ -164,7 +164,7 @@ export default function Features() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const currentUser = "vkhare2909";
-  const currentTime = "2025-03-03 20:06:47";
+  const currentTime = "2025-04-04 20:17:53";
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -186,44 +186,44 @@ export default function Features() {
 
   const features = [
     {
-      icon: <FaBrain />,
-      title: "AI-Powered Career Guidance",
+      icon: <FaLaptopCode />,
+      title: "AI-Powered Video Interviews",
       description:
-        "Our smart career advisor analyzes your resume and suggests personalized career paths, identifying skill gaps and recommending learning resources.",
+        "Our advanced OpenCV-powered system analyzes facial expressions, eye contact, and speech patterns to provide comprehensive candidate assessments for skills verification.",
       imageUrl:
-        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     },
     {
-      icon: <FaFileAlt />,
-      title: "AI Resume Builder & Optimization",
+      icon: <FaChartLine />,
+      title: "Career Path Simulator",
       description:
-        "NLP-based resume generator that structures ATS-friendly resumes with keyword optimization based on job descriptions.",
+        "Interactive visualization tool that projects salary growth, time-to-goal, and job opportunities based on different education and skill acquisition paths.",
       imageUrl:
-        "https://images.unsplash.com/photo-1586282391129-76a6df230234?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     },
     {
       icon: <FaShieldAlt />,
-      title: "Blockchain-Verified Credentials",
+      title: "Blockchain Credential Verification",
       description:
-        "NFT-based skill badges and certifications for tamper-proof verification with smart contracts ensuring trustworthy validation.",
+        "Tamper-proof digital credentials secured on the blockchain, allowing instant verification of skills and educational achievements by employers and investors.",
       imageUrl:
-        "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
+        "https://images.unsplash.com/photo-1639322537228-f710d846310a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1632&q=80",
     },
     {
-      icon: <FaCube />,
-      title: "3D Career Progression Visualization",
+      icon: <FaUsers />,
+      title: "Mentor-Mentee Matching",
       description:
-        "Three.js-powered interactive career roadmap for tracking progress in a gamified way with immersive animations.",
+        "AI-powered platform that connects students with industry experts based on career goals, learning style, and skill gaps for personalized guidance.",
       imageUrl:
-        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
     },
     {
-      icon: <FaGamepad />,
-      title: "Stunning UI/UX & Gamification",
+      icon: <FaGraduationCap />,
+      title: "Skills-Based Financing",
       description:
-        "Engaging and intuitive design with GSAP-powered animations and gamified learning paths to keep users motivated.",
+        "Innovative funding model that connects students with investors through Income Share Agreements based on career potential and skills assessment.",
       imageUrl:
-        "https://images.unsplash.com/photo-1580234811497-9df7fd2f357e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1467&q=80",
+        "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1467&q=80",
     },
   ];
 
@@ -231,26 +231,26 @@ export default function Features() {
   const imageCards = [
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
-      title: "Remote Team Collaboration",
+        "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80",
+      title: "Investor Dashboard",
       description:
-        "Connect with industry professionals across the globe to expand your skills and network.",
+        "Comprehensive analytics platform for investors to track student progress, ROI projections, and manage their education investment portfolio.",
       delay: 0.6,
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1469&q=80",
-      title: "Industry-Focused Learning Paths",
+        "https://images.unsplash.com/photo-1581092921461-7384161d8ac1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1469&q=80",
+      title: "Knowledge Marketplace",
       description:
-        "Customized learning trajectories based on specific industry requirements and future trends.",
+        "Peer-to-peer platform where students can monetize their expertise by creating and selling educational content with blockchain verification.",
       delay: 0.7,
     },
     {
       imageUrl:
-        "https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-      title: "Mentorship Programs",
+        "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80",
+      title: "Employer Recruitment Hub",
       description:
-        "Connect with leaders in your desired field for personalized coaching and insight.",
+        "Direct connection to pre-vetted talent with verified skills, allowing employers to sponsor promising students and secure future talent.",
       delay: 0.8,
     },
   ];
@@ -281,7 +281,7 @@ export default function Features() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className="text-sm font-medium text-indigo-400 uppercase tracking-wider"
+            className="text-sm font-medium text-blue-400 uppercase tracking-wider"
           >
             Key Features
           </motion.span>
@@ -290,12 +290,13 @@ export default function Features() {
             ref={titleRef}
             className="text-3xl md:text-4xl font-bold mt-2 mb-4"
           >
-            Revolutionize Your Career Journey
+            Reimagine Education Financing
           </h2>
 
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Our cutting-edge platform combines the power of AI and blockchain to
-            provide a comprehensive career development solution.
+            EduCredit Pro combines AI-powered assessments, blockchain
+            verification, and innovative financing models to make education
+            accessible and career advancement achievable.
           </p>
         </div>
 
@@ -333,7 +334,7 @@ export default function Features() {
       <div
         className="absolute -z-10 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px]"
         style={{
-          background: "rgba(79, 70, 229, 0.1)",
+          background: "rgba(59, 130, 246, 0.1)",
         }}
       ></div>
     </section>

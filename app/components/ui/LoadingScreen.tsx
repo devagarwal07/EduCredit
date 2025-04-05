@@ -126,7 +126,7 @@ const LoadingScreen = () => {
                     backgroundSize: "200% auto",
                   }}
                 >
-                  UpSkillr
+                  EduCredit
                 </motion.h1>
 
                 {/* Glowing effect */}

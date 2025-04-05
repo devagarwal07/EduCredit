@@ -50,7 +50,7 @@ export default function App({ Component, pageProps, router }: AppProps) {
   return (
     <>
       <Head>
-        <title>UpSkillr - AI-Powered Career Navigator</title>
+        <title>EduCredit - AI-Powered Career Navigator</title>
         <meta
           name="description"
           content="AI-powered career navigation platform with blockchain-backed credentials"
