@@ -255,8 +255,8 @@ export default function Marketplace() {
   }
 
   // Featured items (premium or high rating)
-  const featuredItems = filteredItems.filter(
-    (item) => item.featured || item.premium
+  const verifiedItems = filteredItems.filter(
+    (item) => item.verified || item.premium
   );
 
   return (
@@ -277,12 +277,11 @@ export default function Marketplace() {
               ref={headlineRef}
               className="text-4xl md:text-5xl font-bold mb-2"
             >
-              <span className="gradient-text">Learning</span>{" "}
-              <span className="text-white">Marketplace</span>
+              <span className="gradient-text">Marketplace</span>{" "}
+              {/* <span className="text-white">Marketplace</span> */}
             </h1>
             <p className="text-gray-300 mt-2">
-              Discover courses, mentorship opportunities, and peer-to-peer
-              learning
+            💸 Support Education, Fund Student Dreams
             </p>
           </div>
           <Link href="/collections">
@@ -375,7 +374,7 @@ export default function Marketplace() {
         </motion.div>
 
         {/* Featured items */}
-        {featuredItems.length > 0 && (
+        {verifiedItems.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -386,18 +385,18 @@ export default function Marketplace() {
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-white flex items-center">
                 <Sparkles className="h-5 w-5 mr-2 text-yellow-400" />
-                Featured Opportunities
+                Verified Students
               </h2>
               <Link href="/premium">
                 <span className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center group">
-                  View Premium Content
+                  View others
                   <ArrowUpRight className="ml-1 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </span>
               </Link>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {featuredItems.slice(0, 3).map((item, index) => (
+              {verifiedItems.slice(0, 3).map((item) => (
                 <FeaturedItem
                   key={item.id}
                   item={item}
@@ -415,7 +414,7 @@ export default function Marketplace() {
           transition={{ duration: 0.5, delay: 0.3 }}
         >
           <h2 className="text-2xl font-bold mb-6 text-white">
-            All Opportunities
+          Student Funding Requests
           </h2>
 
           {filteredItems.length === 0 ? (

@@ -2,16 +2,16 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import {
-  Star,
-  GraduationCap,
-  Users,
-  BookOpen,
-  ChevronRight,
-} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import {
+  CheckCircle,
+  MapPin,
+  Star,
+  ChevronRight,
+  Users,
+} from "lucide-react";
 
-type MarketplaceItemProps = {
+type StudentFundingItemProps = {
   item: any;
   delay?: number;
 };
@@ -19,93 +19,94 @@ type MarketplaceItemProps = {
 export default function MarketplaceItem({
   item,
   delay = 0,
-}: MarketplaceItemProps) {
+}: StudentFundingItemProps) {
+  const progressPercent = Math.min(
+    (item.amountRaised / item.amountRequested) * 100,
+    100
+  ).toFixed(0);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay }}
+      transition={{ duration: 0.4, delay }}
       className="group bg-white/5 backdrop-blur-md border border-white/10 rounded-xl shadow-md overflow-hidden hover:shadow-lg hover:border-indigo-500/30 transition-all"
     >
       <div className="relative h-40">
         <Image
-          src={item.image}
-          alt={item.title}
+          src={item.avatar}
+          alt={item.name}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        {item.premium && (
-          <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-md">
-            Premium
-          </div>
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
         <div className="absolute bottom-3 left-3 z-10">
-          {item.type === "course" && (
-            <div className="bg-indigo-500/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center">
-              <GraduationCap className="h-3 w-3 mr-1" />
-              Course
-            </div>
-          )}
-          {item.type === "mentorship" && (
-            <div className="bg-purple-500/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center">
-              <Users className="h-3 w-3 mr-1" />
-              Mentorship
-            </div>
-          )}
-          {item.type === "peer-teaching" && (
-            <div className="bg-teal-500/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center">
-              <BookOpen className="h-3 w-3 mr-1" />
-              Peer Learning
-            </div>
-          )}
+          <div className="bg-indigo-500/90 text-white text-xs px-2 py-1 rounded-full backdrop-blur-sm flex items-center">
+            🎓 Student
+          </div>
         </div>
       </div>
 
       <div className="p-5">
-        <h3 className="font-semibold mb-1 text-white group-hover:text-indigo-300 transition-colors">
-          {item.title}
+        <h3 className="font-semibold mb-1 text-white group-hover:text-indigo-300 transition-colors flex items-center gap-2">
+          {item.name}
+          {item.verified && (
+            <span title="Verified">
+            <CheckCircle className="text-green-400 w-4 h-4" />
+          </span>
+          
+          )}
         </h3>
-        <p className="text-sm text-gray-400 mb-3 line-clamp-2">
-          {item.description}
+
+        <p className="text-sm text-gray-400 mb-1">
+          {item.course}, {item.university}
+        </p>
+        <p className="text-xs text-gray-500 italic mb-3">{item.year}</p>
+
+        <p className="text-sm text-gray-300 line-clamp-2 mb-3">
+          {item.goalPurpose}
         </p>
 
         <div className="flex flex-wrap gap-1 mb-3">
           {(item.skills || []).slice(0, 3).map((skill: string, i: number) => (
             <Badge
               key={i}
-              className="bg-white/5 text-gray-300 hover:bg-indigo-500/10 hover:text-indigo-300 border border-white/10 hover:border-indigo-500/30 transition-colors"
+              className="bg-white/5 text-gray-300 border border-white/10 text-xs"
             >
               {skill}
             </Badge>
           ))}
-          {(item.skills || []).length > 3 && (
-            <Badge className="bg-white/5 text-gray-300 border border-white/10">
-              +{(item.skills || []).length - 3}
-            </Badge>
-          )}
         </div>
 
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-1">
-            <span className="text-sm font-medium text-white">
-              ${item.price}
-            </span>
-            {item.type !== "course" && (
-              <span className="text-xs text-gray-400">/{item.priceType}</span>
-            )}
+        <div className="w-full bg-white/10 h-2 rounded-full mb-2 overflow-hidden">
+          <div
+            className="bg-indigo-500 h-full transition-all"
+            style={{ width: `${progressPercent}%` }}
+          />
+        </div>
+        <div className="flex justify-between text-xs text-gray-400 mb-4">
+          <span>₹{item.amountRaised.toLocaleString()} raised</span>
+          <span>Goal: ₹{item.amountRequested.toLocaleString()}</span>
+        </div>
+
+        <div className="flex justify-between items-center text-sm">
+          <div className="flex items-center gap-2 text-gray-400">
+            <MapPin className="w-4 h-4" />
+            {item.location}
           </div>
 
-          <div className="flex items-center gap-1 text-sm">
-            <Star className="h-3 w-3 text-yellow-400 fill-yellow-400" />
-            <span className="text-white">{item.rating}</span>
+          <div className="flex items-center gap-2 text-white">
+            <Users className="w-4 h-4" />
+            {item.supporters} supporters
           </div>
         </div>
 
         <div className="mt-4 flex justify-between items-center">
-          <span className="text-sm text-gray-400">
-            {item.provider || item.teacher?.name || item.mentor?.name}
-          </span>
+          {/* <div className="flex items-center gap-1 text-sm">
+            <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" /> */}
+            {/* <span className="text-white">{item.rating}</span> */}
+          {/* </div> */}
+
           <Link href={`/marketplace/${item.id}`}>
             <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center gap-1 group/btn">
               Details
